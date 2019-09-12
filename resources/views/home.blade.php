@@ -28,7 +28,8 @@
                         <th scope="col">#</th>
                         <th scope="col">First</th>
                         <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Delete </th>
+                        <th scope="col">Edit</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -37,12 +38,15 @@
                             <th scope="row">{{ $user->id }}</th>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td @if($user->id != auth()->user()->id) @endif>
+                            <td>
+                                @if($user->id != auth()->user()->id)
                                 <form method="POST" action="{{ route('users.delete', ['userId' => $user->id]) }}">
                                     @csrf
                                     <button type="submit" onclick="confirm('Are you sure want to delete this user?');" class="btn btn-danger">Delete</button>
                                 </form>
+                                @endif
                             </td>
+
                             <td><a href="{{ route('users.edit', ['userId' => $user->id]) }}" class="btn btn-info">Edit</a></td>
                         </tr>
                         @endforeach
