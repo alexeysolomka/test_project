@@ -19,19 +19,12 @@ class UserRepository implements ICoreRepository
         return $users;
     }
 
-    public function getById($id)
-    {
-        $columns = ['id', 'name', 'email', 'created_at', 'updated_at'];
-        $user = User::where('id', $id)->first();
-
-        return $user;
-    }
-
     public function create($data)
     {
         $user = User::create([
             'name' => $data->name,
             'email' => $data->email,
+            'is_active' => $data->is_active,
             'password' => bcrypt($data->password)
         ]);
 
@@ -40,18 +33,10 @@ class UserRepository implements ICoreRepository
 
     public function update($id, $data)
     {
-        $user = $this->getById($id);
-        $user->name = $data->name;
-        $user->email = $data->email;
-        $user->touch();
+        $userData = $data->all();
+        $user = User::find($id);
+        $user->update($userData);
 
         return $user;
-    }
-
-    public function delete($id)
-    {
-        $user = $this->getById($id);
-
-        return $user->delete();
     }
 }
