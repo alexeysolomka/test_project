@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository;
+use App\User;
 
 class UserController extends Controller
 {
@@ -24,7 +25,7 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return route
      */
     public function store(CreateUserRequest $request)
     {
@@ -43,11 +44,11 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return view
      */
     public function edit($id)
     {
-        $user = $this->userRepository->getById($id);
+        $user = User::find($id);
 
         return view('users.edit', compact('user'));
     }
@@ -57,7 +58,7 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return route
      */
     public function update(UpdateUserRequest $request, $id)
     {
@@ -70,11 +71,12 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return route
      */
     public function destroy($id)
     {
-        if($this->userRepository->delete($id))
+        $user = User::find($id);
+        if($user->delete($id))
         {
             return back()->with('status', 'User successful deleted.');
         }
