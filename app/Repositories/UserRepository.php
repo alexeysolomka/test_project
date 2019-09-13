@@ -22,11 +22,12 @@ class UserRepository implements ICoreRepository
     public function create($data)
     {
         $user = User::create([
-            'name' => $data->name,
-            'email' => $data->email,
-            'is_active' => $data->is_active,
-            'role_id' => $data->role_id,
-            'password' => bcrypt($data->password)
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'is_active' => $data['is_active'],
+            'role_id' => $data['role_id'],
+            'avatar' => $data['avatar'],
+            'password' => bcrypt($data['password'])
         ]);
 
         return $user;
@@ -34,9 +35,8 @@ class UserRepository implements ICoreRepository
 
     public function update($id, $data)
     {
-        $userData = $data->all();
         $user = User::find($id);
-        $user->update($userData);
+        $user->update($data);
 
         return $user;
     }

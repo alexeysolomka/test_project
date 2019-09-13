@@ -32,4 +32,5 @@ Route::group($userConfig, function () {
     Route::get('/{userId}/edit', 'UserController@edit')->name('users.edit');
     Route::post('/{userId}/update', 'UserController@update')->name('users.update');
     Route::post('delete/{userId}', 'UserController@destroy')->name('users.delete');
+    Route::get('/avatar/delete/{userId}', 'UserController@removeAvatar')->name('users.avatar-delete');
 });

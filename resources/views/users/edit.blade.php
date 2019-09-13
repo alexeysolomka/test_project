@@ -19,8 +19,24 @@
                             </div>
                         @endif
                     </div>
-                    <form method="POST" action="{{ route('users.update', ['userId' => $user->id]) }}">
+                    <form method="POST" action="{{ route('users.update', ['userId' => $user->id]) }}" enctype="multipart/form-data">
                         @csrf
+                        <div class="form-group row">
+                            <label for="profile_image" class="col-md-4 col-form-label text-md-right">Profile Image</label>
+                            <div class="col-md-6">
+                                <input id="avatar" type="file" class="form-control-file" name="avatar">
+                                @if ($user->avatar)
+                                    <img src="{{ asset($user->avatar) }}">
+                                    <br>
+                                    <a href="{{ route('users.avatar-delete', ['userId' => $user->id]) }}" class="btn btn-danger">Del avatar</a>
+                                @endif
+                                @if ($errors->has('name'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('name') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
                         @if(!empty($roles) && auth()->user()->role_id == 1)
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">User Role</label>
