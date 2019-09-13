@@ -40,7 +40,7 @@ class UserService
             }
             case 2: {
                 $user = User::find($userId);
-                if($user->role_id != 1) break;
+                if($user->role_id != 1 && $user->role_id != 2) break;
             }
             default: {
                 $user = auth()->user();
