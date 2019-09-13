@@ -17,37 +17,30 @@ class PermissionTableSeeder extends Seeder
         DB::table('permissions')
             ->insert([
                 [
-                    'key' => 'user|admin|moderator',
                     'controller' => 'App\Http\Controllers\HomeController',
                     'method' => 'index'
                 ],
                 [
-                    'key' => 'admin|moderator',
                     'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'create'
                 ],
                 [
-                    'key' => 'admin|moderator',
                     'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'store'
                 ],
                 [
-                    'key' => 'user|admin|moderator',
                     'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'edit'
                 ],
                 [
-                    'key' => 'user|admin|moderator',
                     'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'update'
                 ],
                 [
-                    'key' => 'admin|moderator',
                     'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'destroy'
                 ],
                 [
-                    'key' => 'user|admin|moderator',
                     'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'removeAvatar'
                 ],
@@ -61,14 +54,13 @@ class PermissionTableSeeder extends Seeder
 
         foreach($permissions as $permission)
         {
-            $keys = explode('|', $permission->key);
-
-            for($i = 0; $i < sizeof($keys); $i++)
-            {
-                if($keys[$i] == 'admin') $roleAdmin->permissions()->attach($permission);
-                if($keys[$i] == 'moderator') $roleModerator->permissions()->attach($permission);
-                if($keys[$i] == 'user') $roleUser->permissions()->attach($permission);
-            }
+            $roleAdmin->permissions()->attach($permission);
+            $roleModerator->permissions()->attach($permission);
         }
+        $indexPagePermission = Permission::where('method', 'index')->first()->id;
+        $editProfilePermission = Permission::where('method', 'edit')->first()->id;
+        $updateProfilePermission = Permission::where('method', 'update')->first()->id;
+        $removeAvatarPermission = Permission::where('method', 'removeAvatar')->first()->id;
+        $roleUser->permissions()->attach([$indexPagePermission, $editProfilePermission, $updateProfilePermission, $removeAvatarPermission]);
     }
 }
