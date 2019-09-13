@@ -21,6 +21,25 @@
                     </div>
                     <form method="POST" action="{{ route('users.store') }}">
                         @csrf
+                        @if(!empty($roles) && auth()->user()->role_id == 1)
+                            <div class="form-group row">
+                                <label for="name" class="col-md-4 col-form-label text-md-right">User Role</label>
+                                <div class="col-md-6">
+                                    <select class="form-control" name="role_id" required>
+                                        @foreach($roles as $role)
+                                            <option value="{{ $role->id }}" @if($role->id == 3) selected="{{ $role->id }}" @endif>{{ $role->name }}</option>
+                                            @endforeach
+                                    </select>
+                                    @if ($errors->has('name'))
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('name') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+                            @else
+                            <input type="hidden" name="role_id" value="3">
+                            @endif
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">Is Active</label>
                             <div class="col-md-6">

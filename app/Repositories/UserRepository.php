@@ -11,7 +11,7 @@ class UserRepository implements ICoreRepository
 {
     public function getAll()
     {
-        $columns = ['id', 'name', 'email'];
+        $columns = ['id', 'name', 'email', 'role_id'];
         $users = User::select($columns)
             ->orderBy('id', 'ASC')
             ->paginate(10);
@@ -25,6 +25,7 @@ class UserRepository implements ICoreRepository
             'name' => $data->name,
             'email' => $data->email,
             'is_active' => $data->is_active,
+            'role_id' => $data->role_id,
             'password' => bcrypt($data->password)
         ]);
 

@@ -5,20 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository;
+use App\Services\UserService;
 use App\User;
 
 class UserController extends Controller
 {
     private $userRepository;
+    private $userService;
 
     public function __construct()
     {
         $this->userRepository = app(UserRepository::class);
+        $this->userService = app(UserService::class);
     }
 
     public function create()
     {
-        return view('users.create');
+        $roles = $this->userService->getUserRoles();
+
+        return view('users.create', compact('roles'));
     }
 
     /**
@@ -48,9 +53,10 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
+        $user = $this->userService->getUserForEdit($id);
+        $roles = $this->userService->getUserRoles();
 
-        return view('users.edit', compact('user'));
+        return view('users.edit', compact('user', 'roles'));
     }
 
     /**
