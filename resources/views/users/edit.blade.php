@@ -66,7 +66,7 @@
                             @endif
 
                         @endif
-                        @if(auth()->user()->role_id != 3)
+                        @if(auth()->user()->role_id != 3 && auth()->user()->id != $user->id)
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Is Active</label>
                                 <div class="col-md-6">
