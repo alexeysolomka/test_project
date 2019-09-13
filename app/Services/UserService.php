@@ -55,7 +55,13 @@ class UserService
         $imgData = $this->resizeImage($image, 300, 50);
         $name = str_slug($userEmail) . '_' . time();
         $folder = '/uploads/images/';
-        $filePath = $folder . $name . '_resized.' . $image->getClientOriginalExtension();
+        $path = public_path() . '/storage/uploads/images';
+
+        if(!realpath($path))
+        {
+            mkdir($path, 0700, true);
+        }
+
         $newFilePath = '/storage/uploads/images/resized_' . $name . time() . '.' . $image->getClientOriginalExtension();
 
         switch ($image->getClientOriginalExtension())
