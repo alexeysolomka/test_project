@@ -3,7 +3,7 @@
 use App\Permission;
 use App\Role;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 class PermissionTableSeeder extends Seeder
 {
@@ -14,30 +14,60 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
-        $permission_ids = [];
+        DB::table('permissions')
+            ->insert([
+                [
+                    'key' => 'user',
+                    'controller' => 'App\Http\Controllers\HomeController',
+                    'method' => 'index'
+                ],
+                [
+                    'key' => '',
+                    'controller' => 'App\Http\Controllers\UserController',
+                    'method' => 'create'
+                ],
+                [
+                    'key' => '',
+                    'controller' => 'App\Http\Controllers\UserController',
+                    'method' => 'store'
+                ],
+                [
+                    'key' => 'user',
+                    'controller' => 'App\Http\Controllers\UserController',
+                    'method' => 'edit'
+                ],
+                [
+                    'key' => 'user',
+                    'controller' => 'App\Http\Controllers\UserController',
+                    'method' => 'update'
+                ],
+                [
+                    'key' => '',
+                    'controller' => 'App\Http\Controllers\UserController',
+                    'method' => 'destroy'
+                ],
+                [
+                    'key' => 'user',
+                    'controller' => 'App\Http\Controllers\UserController',
+                    'method' => 'removeAvatar'
+                ],
+            ]);
 
-        foreach(Route::getRoutes()->getRoutes() as $key => $route)
+        $permissions = Permission::all();
+
+        $roleAdmin = Role::where('name', 'admin')->first();
+        $roleModerator = Role::where('name', 'moderator')->first();
+        $roleUser = Role::where('name', 'user')->first();
+
+        foreach($permissions as $permission)
         {
-            $action = $route->getActionname();
+            $roleAdmin->permissions()->attach($permission);
+            $roleModerator->permissions()->attach($permission);
 
-            $_action = explode('@', $action);
-
-            $controller = $_action[0];
-            $method = end($_action);
-
-            $permission_check = Permission::where(
-                ['controller' => $controller, 'method' => $method]
-            )->first();
-            if(!$permission_check)
+            if($permission->key == 'user')
             {
-                $permission = new Permission;
-                $permission->controller = $controller;
-                $permission->method = $method;
-                $permission->save();
-                $permission_ids[] = $permission->id;
+                $roleUser->permissions()->attach($permission);
             }
-            $admin_role = Role::where('name', 'admin')->first();
-            $admin_role->permissions()->attach($permission_ids);
         }
     }
 }
