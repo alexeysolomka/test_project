@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d13db6ae-9948-4165-ab9d-76ec32e696d8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -157,7 +156,7 @@
       <option name="presentableId" value="Default" />
       <updated>1568293377871</updated>
       <workItem from="1568293379126" duration="12553000" />
-      <workItem from="1568358135504" duration="16523000" />
+      <workItem from="1568358135504" duration="17131000" />
     </task>
     <task id="LOCAL-00001" summary="Add Active/Inactive button">
       <created>1568305794730</created>
