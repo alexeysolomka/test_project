@@ -17,37 +17,37 @@ class PermissionTableSeeder extends Seeder
         DB::table('permissions')
             ->insert([
                 [
-                    'key' => 'user',
+                    'key' => 'user|admin|moderator',
                     'controller' => 'App\Http\Controllers\HomeController',
                     'method' => 'index'
                 ],
                 [
-                    'key' => '',
+                    'key' => 'admin|moderator',
                     'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'create'
                 ],
                 [
-                    'key' => '',
+                    'key' => 'admin|moderator',
                     'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'store'
                 ],
                 [
-                    'key' => 'user',
+                    'key' => 'user|admin|moderator',
                     'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'edit'
                 ],
                 [
-                    'key' => 'user',
+                    'key' => 'user|admin|moderator',
                     'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'update'
                 ],
                 [
-                    'key' => '',
+                    'key' => 'admin|moderator',
                     'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'destroy'
                 ],
                 [
-                    'key' => 'user',
+                    'key' => 'user|admin|moderator',
                     'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'removeAvatar'
                 ],
@@ -61,12 +61,13 @@ class PermissionTableSeeder extends Seeder
 
         foreach($permissions as $permission)
         {
-            $roleAdmin->permissions()->attach($permission);
-            $roleModerator->permissions()->attach($permission);
+            $keys = explode('|', $permission->key);
 
-            if($permission->key == 'user')
+            for($i = 0; $i < sizeof($keys); $i++)
             {
-                $roleUser->permissions()->attach($permission);
+                if($keys[$i] == 'admin') $roleAdmin->permissions()->attach($permission);
+                if($keys[$i] == 'moderator') $roleModerator->permissions()->attach($permission);
+                if($keys[$i] == 'user') $roleUser->permissions()->attach($permission);
             }
         }
     }
