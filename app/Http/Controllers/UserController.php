@@ -76,7 +76,6 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, $id)
     {
         $data = $request->all();
-        $data['avatar'] = null;
         if ($request->has('avatar')) {
             $this->userService->deleteImageIfExist($id);
             $imagePath = $this->userService->uploadAvatar($request->email, $request->file('avatar'));
