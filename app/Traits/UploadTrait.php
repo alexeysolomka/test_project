@@ -4,7 +4,6 @@
 namespace App\Traits;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 trait UploadTrait
 {
@@ -12,22 +11,19 @@ trait UploadTrait
     {
         $name = !is_null($filename) ? $filename : str_random(25);
 
-        $file = $uploadedFile->storeAs($folder, $name.'.'.$uploadedFile->getClientOriginalExtension(), $disk);
+        $file = $uploadedFile->storeAs($folder, $name . '.' . $uploadedFile->getClientOriginalExtension(), $disk);
 
         return $file;
     }
 
-    public function resizeImage($file, $w, $h) {
+    public function resizeImage($file)
+    {
         list($width, $height) = getimagesize($file);
 
         $newwidth = 100;
         $newheight = 50;
 
-        //Get file extension
-        $exploding = explode(".",$file);
-        $ext = end($exploding);
-
-        switch($ext){
+        switch ($file->getClientOriginalExtension()) {
             case "png":
                 $src = imagecreatefrompng($file);
                 break;
