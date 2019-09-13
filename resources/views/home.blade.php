@@ -65,6 +65,9 @@
                                         @elseif(auth()->user()->role_id == 2 && $user->role_id != 2)
                                             <a href="{{ route('users.edit', ['userId' => $user->id]) }}"
                                                class="btn btn-info">Edit</a>
+                                        @elseif(auth()->user()->role_id == 1)
+                                            <a href="{{ route('users.edit', ['userId' => $user->id]) }}"
+                                               class="btn btn-info">Edit</a>
                                         @endif
                                     </td>
                                 </tr>
