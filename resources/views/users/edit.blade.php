@@ -19,16 +19,19 @@
                             </div>
                         @endif
                     </div>
-                    <form method="POST" action="{{ route('users.update', ['userId' => $user->id]) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('users.update', ['userId' => $user->id]) }}"
+                          enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row">
-                            <label for="profile_image" class="col-md-4 col-form-label text-md-right">Profile Image</label>
+                            <label for="profile_image" class="col-md-4 col-form-label text-md-right">Profile
+                                Image</label>
                             <div class="col-md-6">
                                 <input id="avatar" type="file" class="form-control-file" name="avatar">
                                 @if ($user->avatar)
                                     <img src="{{ asset($user->avatar) }}">
                                     <br>
-                                    <a href="{{ route('users.avatar-delete', ['userId' => $user->id]) }}" class="btn btn-danger">Del avatar</a>
+                                    <a href="{{ route('users.avatar-delete', ['userId' => $user->id]) }}"
+                                       class="btn btn-danger">Del avatar</a>
                                 @endif
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback" role="alert">
@@ -56,7 +59,12 @@
                                 </div>
                             </div>
                         @else
-                            <input type="hidden" name="role_id" value="3">
+                            @if($user->role_id == 2)
+                                <input type="hidden" name="role_id" value="2">
+                            @elseif($user->role_id == 3)
+                                <input type="hidden" name="role_id" value="3">
+                            @endif
+
                         @endif
                         @if(auth()->user()->role_id != 3)
                             <div class="form-group row">
@@ -68,7 +76,7 @@
                                                         @endif value="0">
                                 </div>
                             </div>
-                            @else
+                        @else
                             <input type="hidden" name="is_active" value="{{ $user->is_active }}">
                         @endif
                         <div class="form-group row">
