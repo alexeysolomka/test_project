@@ -23,6 +23,7 @@
                         @if(auth()->user()->role_id != 3)
                             <a href="{{ route('users.create') }}">Create new user</a>
                         @endif
+                        <a href="{{ route('users.edit', ['userId' => auth()->user()->id]) }}">Edit Profile</a>
                     </div>
                     <table class="table">
                         <thead>
