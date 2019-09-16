@@ -20,10 +20,10 @@
                         @endif
 
                         You are logged in!
-                        @if(auth()->user()->role_id != 3)
+                        @if(auth()->user()->role->name != 'user')
                             <a href="{{ route('users.create') }}">Create new user</a>
                         @endif
-                        <a href="{{ route('users.edit', ['userId' => auth()->user()->id]) }}">Edit Profile</a>
+                        <a href="{{ route('users.profile', ['userId' => auth()->user()->id]) }}">Edit Profile</a>
                     </div>
                     <table class="table">
                         <thead>
@@ -31,7 +31,7 @@
                             <th scope="col">#</th>
                             <th scope="col">First</th>
                             <th scope="col">Last</th>
-                            @if(auth()->user()->role_id != 3)
+                            @if(auth()->user()->role->name != 'user')
                                 <th scope="col">Delete</th>
                             @endif
                             <th scope="col">Edit</th>
@@ -39,12 +39,12 @@
                         </thead>
                         <tbody>
                         @foreach($users as $user)
-                            @if($user->role_id != 1)
+                            @if($user->role->name != 'admin')
                                 <tr>
                                     <th scope="row">{{ $user->id }}</th>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
-                                    @if(auth()->user()->role_id != 3)
+                                    @if(auth()->user()->role->name != 'user')
                                         <td>
                                             @if($user->id != auth()->user()->id)
                                                 <form method="POST"
@@ -59,13 +59,13 @@
                                         </td>
                                     @endif
                                     <td>
-                                        @if(auth()->user()->role_id == 3 && auth()->user()->id == $user->id)
+                                        @if(auth()->user()->checkRole('user') && auth()->user()->id == $user->id)
                                             <a href="{{ route('users.edit', ['userId' => $user->id]) }}"
                                                class="btn btn-info">Edit</a>
-                                        @elseif(auth()->user()->role_id == 2 && $user->role_id != 2)
+                                        @elseif(auth()->user()->checkRole('moderator') && $user->role->name != 'moderator')
                                             <a href="{{ route('users.edit', ['userId' => $user->id]) }}"
                                                class="btn btn-info">Edit</a>
-                                        @elseif(auth()->user()->role_id == 1)
+                                        @elseif(auth()->user()->checkRole('admin'))
                                             <a href="{{ route('users.edit', ['userId' => $user->id]) }}"
                                                class="btn btn-info">Edit</a>
                                         @endif

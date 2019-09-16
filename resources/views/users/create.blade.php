@@ -25,14 +25,14 @@
                             <label for="profile_image" class="col-md-4 col-form-label text-md-right">Profile Image</label>
                             <div class="col-md-6">
                                 <input id="avatar" type="file" class="form-control-file" name="avatar">
-                                @if ($errors->has('name'))
+                                @if ($errors->has('avatar'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $errors->first('avatar') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
-                        @if(!empty($roles) && auth()->user()->role_id == 1)
+                        @if(!empty($roles) && auth()->user()->checkRole('admin'))
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">User Role</label>
                                 <div class="col-md-6">

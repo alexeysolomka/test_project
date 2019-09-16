@@ -33,14 +33,14 @@
                                     <a href="{{ route('users.avatar-delete', ['userId' => $user->id]) }}"
                                        class="btn btn-danger">Del avatar</a>
                                 @endif
-                                @if ($errors->has('name'))
+                                @if ($errors->has('avatar'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $errors->first('avatar') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
-                        @if(!empty($roles) && auth()->user()->role_id == 1)
+                        @if(!empty($roles) && auth()->user()->checkRole('admin'))
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">User Role</label>
                                 <div class="col-md-6">
@@ -58,15 +58,8 @@
                                     @endif
                                 </div>
                             </div>
-                        @else
-                            @if($user->role_id == 2)
-                                <input type="hidden" name="role_id" value="2">
-                            @elseif($user->role_id == 3)
-                                <input type="hidden" name="role_id" value="3">
-                            @endif
-
                         @endif
-                        @if(auth()->user()->role_id != 3 && auth()->user()->id != $user->id)
+                        @if(auth()->user()->role->name != 'user' && auth()->user()->id != $user->id)
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Is Active</label>
                                 <div class="col-md-6">

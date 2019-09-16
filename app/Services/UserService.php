@@ -32,18 +32,18 @@ class UserService
 
     public function getUserForEdit($userId)
     {
-        switch (auth()->user()->role_id)
+        switch (auth()->user()->role->name)
         {
-            case 1: {
+            case 'admin': {
                 $user = User::find($userId);
                 break;
             }
-            case 2: {
+            case 'moderator': {
                 $user = User::find($userId);
-                if($user->role_id != 1 && $user->role_id != 2) break;
+                if($user->role->name != 'admin' && $user->role->name != 'moderator') break;
             }
             default: {
-                $user = auth()->user();
+                return response('Unauthorized Action', 403);
             }
         }
 

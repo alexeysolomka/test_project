@@ -30,6 +30,7 @@ Route::group($userConfig, function () {
     Route::get('/create', 'UserController@create')->name('users.create');
     Route::post('/store', 'UserController@store')->name('users.store');
     Route::get('/{userId}/edit', 'UserController@edit')->name('users.edit');
+    Route::get('/{userId}/profile', 'UserController@profile')->name('users.profile');
     Route::post('/{userId}/update', 'UserController@update')->name('users.update');
     Route::post('delete/{userId}', 'UserController@destroy')->name('users.delete');
     Route::get('/avatar/delete/{userId}', 'UserController@removeAvatar')->name('users.avatar-delete');

@@ -15,6 +15,7 @@ class UserController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->userRepository = app(UserRepository::class);
         $this->userService = app(UserService::class);
     }
@@ -35,7 +36,6 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
         $data = $request->all();
-        $data['avatar'] = null;
 
         if ($request->has('avatar')) {
             $imagePath = $this->userService->uploadAvatar($request->email, $request->file('avatar'));
@@ -44,7 +44,6 @@ class UserController extends Controller
 
         $user = $this->userRepository->create($data);
         if (!empty($user)) {
-            $user->touch();
             return back()->with('status', 'User successful created.');
         }
 
@@ -60,10 +59,22 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = $this->userService->getUserForEdit($id);
+        $response = $this->userService->getUserForEdit($id);
         $roles = $this->userService->getUserRoles();
 
-        return view('users.edit', compact('user', 'roles'));
+        if($response instanceof User)
+        {
+            return view('users.edit', ['user' => $response, 'roles' => $roles]);
+        }
+
+        return $response;
+    }
+
+    public function profile($userId)
+    {
+        $user = User::find($userId);
+
+        return view('users.edit', compact('user'));
     }
 
     /**

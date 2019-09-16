@@ -1,6 +1,7 @@
 <?php
 
 use App\Permission;
+use App\PermissionRole;
 use App\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,10 @@ class PermissionTableSeeder extends Seeder
                 ],
                 [
                     'controller' => 'App\Http\Controllers\UserController',
+                    'method' => 'profile'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'update'
                 ],
                 [
@@ -54,13 +59,34 @@ class PermissionTableSeeder extends Seeder
 
         foreach($permissions as $permission)
         {
-            $roleAdmin->permissions()->attach($permission);
-            $roleModerator->permissions()->attach($permission);
+            PermissionRole::create([
+                'permission_id' => $permission->id,
+                'role_id' => $roleAdmin->id
+            ]);
+            PermissionRole::create([
+                'permission_id' => $permission->id,
+                'role_id' => $roleModerator->id
+            ]);
         }
         $indexPagePermission = Permission::where('method', 'index')->first()->id;
-        $editProfilePermission = Permission::where('method', 'edit')->first()->id;
+        $editProfilePermission = Permission::where('method', 'profile')->first()->id;
         $updateProfilePermission = Permission::where('method', 'update')->first()->id;
         $removeAvatarPermission = Permission::where('method', 'removeAvatar')->first()->id;
-        $roleUser->permissions()->attach([$indexPagePermission, $editProfilePermission, $updateProfilePermission, $removeAvatarPermission]);
+        PermissionRole::create([
+            'permission_id' => $indexPagePermission,
+            'role_id' => $roleUser->id
+        ]);
+        PermissionRole::create([
+            'permission_id' => $editProfilePermission,
+            'role_id' => $roleUser->id
+        ]);
+        PermissionRole::create([
+            'permission_id' => $updateProfilePermission,
+            'role_id' => $roleUser->id
+        ]);
+        PermissionRole::create([
+            'permission_id' => $removeAvatarPermission,
+            'role_id' => $roleUser->id
+        ]);
     }
 }
