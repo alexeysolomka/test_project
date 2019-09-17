@@ -35,3 +35,11 @@ Route::group($userConfig, function () {
     Route::post('delete/{userId}', 'UserController@destroy')->name('users.delete');
     Route::get('/avatar/delete/{userId}', 'UserController@removeAvatar')->name('users.avatar-delete');
 });
+
+$undegroundConfig = [
+  'prefix' => 'underground'
+];
+Route::group($undegroundConfig, function () {
+    Route::get('/search_path_form', 'SearchShortPathController@index')->name('underground.searchIndex');
+    Route::post('/search', 'SearchShortPathController@search')->name('underground.search');
+});

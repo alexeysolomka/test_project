@@ -10,6 +10,11 @@ class Intersection extends Model
 
     public function stations()
     {
-        return $this->hasMany(Station::class, 'intersection_to_stations');
+        return $this->hasManyThrough(Station::class, IntersectionToStation::class,
+            'intersection_id',
+            'id',
+            'id',
+            'station_id'
+            );
     }
 }
