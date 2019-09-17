@@ -12,13 +12,32 @@ class IntersectionToStationSeeder extends Seeder
      */
     public function run()
     {
-        foreach(range(1, 5) as $item)
-        {
-            DB::table('intersection_to_stations')
-                ->insert([
-                    'intersection_id' => rand(1, 5),
-                    'station_id' => rand(1, 100)
-                ]);
-        }
+        DB::table('intersection_to_stations')
+            ->insert([
+                [
+                    'intersection_id' => 1,
+                    'station_id' => 4
+                ],
+                [
+                    'intersection_id' => 1,
+                    'station_id' => 25
+                ],
+                [
+                    'intersection_id' => 2,
+                    'station_id' => 6
+                ],
+                [
+                    'intersection_id' => 2,
+                    'station_id' => 15
+                ],
+                [
+                    'intersection_id' => 3,
+                    'station_id' => 14
+                ],
+                [
+                    'intersection_id' => 3,
+                    'station_id' => 22
+                ],
+            ]);
     }
 }

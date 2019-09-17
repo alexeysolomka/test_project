@@ -12,12 +12,11 @@ class IntersectionSeeder extends Seeder
      */
     public function run()
     {
-        foreach(range(1, 5) as $item)
-        {
-            DB::table('intersections')
-                ->insert([
-                    'name' => 'Intersection' . $item
-                ]);
-        }
+        DB::table('intersections')
+            ->insert([
+                [ 'name' => 'Blue line' ],
+                [ 'name' => 'Green line' ],
+                [ 'name' => 'Red line' ]
+            ]);
     }
 }

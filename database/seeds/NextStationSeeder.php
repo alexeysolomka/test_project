@@ -16,11 +16,19 @@ class NextStationSeeder extends Seeder
 
         foreach($stations as $station)
         {
-            if(!$station->next && $station->id < 99)
+            if($station->id < 13)
             {
                 $station->next = $station->id + 1;
-                $station->save();
             }
+            if($station->id >13 && $station->id < 21)
+            {
+                $station->next = $station->id + 1;
+            }
+            if($station->id > 21 && $station->id < 29)
+            {
+                $station->next = $station->id + 1;
+            }
+            $station->save();
         }
     }
 }
