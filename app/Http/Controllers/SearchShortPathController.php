@@ -23,40 +23,59 @@ class SearchShortPathController extends Controller
 
         $stationFrom = Station::find($from);
         $stationTo = Station::find($to);
+        $nextStation = $stationFrom->next;
+        $stations = Station::all();
 
-        if($from == $to)
+        $stations_ids = [];
+        $this->searchPath($stationFrom, $stationTo);
+    }
+
+    private function searchPath($start, $to)
+    {
+        if($start->id == $to->id)
         {
-            $path [] = $stationFrom->name;
-            return $path;
+            dd($to);
         }
-        if($stationFrom->branch_id == $stationTo->branch_id)
+        if(isset($start->next))
         {
-            $branch = $stationFrom->branch;
-            $stationsBranch = $branch->stations;
-            if($stationFrom->id > $stationTo->id)
+            $next = Station::find($start->next);
+            dump($next->name);
+            if($start->branch_id == $to->branch_id)
             {
-                $betweenFromTo = $stationsBranch->whereBetween('id', [$stationTo->id, $stationFrom->id]);
-
+                $next = Station::find($start->next);
+                return $this->searchPath($next, $to);
             }
             else
             {
-                $betweenFromTo = $stationsBranch->whereBetween('id', [$stationFrom->id, $stationTo->id]);
-            }
-            foreach($betweenFromTo as $station)
-            {
-                $path [] = $station->name;
+                if($intersections = $start->intersections)
+                {
+                    foreach($intersections as $intersection)
+                    {
+                        if($stations = $intersection->stations)
+                        {
+                            foreach($stations as $station)
+                            {
+                                if($station->branch_id == $to->branch_id)
+                                {
+                                    $stations = Station::where('branch_id', $station->branch_id)->get();
+                                    foreach($stations as $item)
+                                    {
+                                        dump($item->name);
+                                        if($item->next == $to->id)
+                                        {
+                                            dd($to);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return $this->searchPath($next, $to);
             }
 
-            return $path;
         }
 
-        $branch__from_id = $stationFrom->branch_id;
-        $branch_to_id = $stationTo->branch_id;
-
-        $intersectionsStationFrom = $stationFrom->intersections;
-        $intersectionsStationTo = $stationTo->intersections;
-        dd($intersectionsStationFrom, $intersectionsStationTo->first()->stations);
-
-        dd($path);
+        return false;
     }
 }
