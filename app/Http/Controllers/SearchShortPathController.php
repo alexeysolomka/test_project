@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class SearchShortPathController extends Controller
 {
+    private $paths;
+    private $dist;
+
     public function index()
     {
         $stations = Station::all();
@@ -27,7 +30,32 @@ class SearchShortPathController extends Controller
         $stations = Station::all();
 
         $stations_ids = [];
-        $this->searchPath($stationFrom, $stationTo);
+//        $this->searchPath($stationFrom, $stationTo);
+        $this->enumerate($stationFrom, $stationTo);
+    }
+
+    private function enumerate($source, $dest)
+    {
+        array_unshift($this->path, $source);
+        $discovered[] = $source;
+
+        if ($source === $dest) {
+            $this->paths[] = $this->path;
+        } else {
+            if (!$this->prev[$source]) {
+                return;
+            }
+            foreach ($this->prev[$source] as $child) {
+                if (!in_array($child, $discovered)) {
+                    $this->enumerate($child, $dest);
+                }
+            }
+        }
+
+        array_shift($this->path);
+        if (($key = array_search($source, $discovered)) !== false) {
+            unset($discovered[$key]);
+        }
     }
 
     private function searchPath($start, $to)
