@@ -16,7 +16,7 @@ class NextStationSeeder extends Seeder
 
         foreach($stations as $station)
         {
-            if(!$station->next && $station->id < 100)
+            if(!$station->next && $station->id < 99)
             {
                 $station->next = $station->id + 1;
                 $station->save();

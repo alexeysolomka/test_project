@@ -15,7 +15,7 @@ class Station extends Model
 
     public function next()
     {
-        return $this->belongsTo(Station::class);
+        return $this->hasOne(Station::class);
     }
 
     public function intersections()

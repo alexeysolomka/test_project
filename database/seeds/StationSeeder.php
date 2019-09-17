@@ -12,11 +12,27 @@ class StationSeeder extends Seeder
      */
     public function run()
     {
-        foreach (range(1, 100) as $item)
+        foreach(range(1, 33) as $item)
         {
             DB::table('stations')
                 ->insert([
-                    'branch_id' => rand(1, 3),
+                    'branch_id' => 1,
+                    'name' => 'Station' . $item,
+                ]);
+        }
+        foreach(range(34, 66) as $item)
+        {
+            DB::table('stations')
+                ->insert([
+                    'branch_id' => 2,
+                    'name' => 'Station' . $item,
+                ]);
+        }
+        foreach(range(67, 98) as $item)
+        {
+            DB::table('stations')
+                ->insert([
+                    'branch_id' => 3,
                     'name' => 'Station' . $item,
                 ]);
         }
