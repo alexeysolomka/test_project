@@ -25,49 +25,72 @@ class SearchShortPathController extends Controller
 
         $stationFrom = Station::find($from);
         $stationTo = Station::find($to);
-        $nextStation = $stationFrom->next;
-        $stations = Station::all();
 
-        $stations_ids = [];
-        $this->searchPath($stationFrom, $stationTo);
+        $routes = [];
+
+        $routes[] = $this->searchRoutes($stationFrom->id, $stationTo->id);
+        dd($routes);
     }
 
-    private function searchPath($start, $to)
+
+    private function searchRoutes($start, $end, $routes = [])
     {
-        if ($start->id == $to->id) {
-            dd($to);
+        $startId = $start;
+        $endId = $end;
+        if($start < $end)
+        {
+            $start = Station::find($startId);
+            $end = Station::find($endId);
         }
-        if (isset($start->next)) {
-            $next = Station::find($start->next);
-            dump($next->name);
-            if ($start->id == $to->id) {
-                dd($to);
-            } else {
-                if ($start->branch_id == $to->branch_id) {
-                    $next = Station::find($start->next);
-                    return $this->searchPath($next, $to);
-                } else {
-                    if ($intersections = $start->intersections) {
-                        foreach ($intersections as $intersection) {
-                            $stations = $intersection->stations;
-                            foreach ($stations as $station) {
-                                if ($station->branch_id == $to->branch_id) {
-                                    $stations = Station::where('branch_id', $station->branch_id)->get();
-                                    foreach ($stations as $item) {
-                                        dump($item->name);
-                                        if ($item->next == $to->id) {
-                                            dd($to);
-                                        }
-                                    }
+        else
+        {
+            $start = Station::find($endId);
+            $end = Station::find($startId);
+        }
+
+        $routes[] = $start;
+        $end_branch_id = $end->branch_id;
+
+        if($start->id == $end->id)
+        {
+            return $routes;
+        }
+
+        if($start->branch_id == $end_branch_id)
+        {
+            return $this->searchRoutes($start->next, $end->id, $routes);
+        }
+
+        if(isset($start->next))
+        {
+            if($start->intersections->isEmpty())
+            {
+                return $this->searchRoutes($start->next, $end->id, $routes);
+            }
+            else
+            {
+                foreach($start->intersections as $intersection)
+                {
+                    foreach($intersection->stations as $station)
+                    {
+                        if($station->branch_id == $end_branch_id)
+                        {
+                            $stations = Station::where('branch_id', $end_branch_id)->get();
+                            foreach($stations as $item)
+                            {
+                                $routes[] = $item;
+                                if($item->id == $end->id)
+                                {
+                                    return $routes;
                                 }
                             }
                         }
                     }
-                    return $this->searchPath($next, $to);
                 }
+                return $this->searchRoutes($start->next, $end->id, $routes);
             }
         }
 
-        return false;
+        return $routes;
     }
 }
