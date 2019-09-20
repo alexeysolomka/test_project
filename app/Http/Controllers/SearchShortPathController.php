@@ -42,9 +42,17 @@ class SearchShortPathController extends Controller
 
     private function calculateRoutes($previousStation, $currentStation, $destinationStation, $visitedStations = [])
     {
+        $startId = $currentStation;
+        $endId = $destinationStation;
+        if($currentStation > $destinationStation)
+        {
+            $startId = $destinationStation;
+            $endId = $currentStation;
+        }
         $previousStation = Station::find($previousStation);
-        $currentStation = Station::find($currentStation);
-        $destinationStation = Station::find($destinationStation);
+        $currentStation = Station::find($startId);
+        $destinationStation = Station::find($endId);
+
         if ($currentStation->id == $destinationStation->id) {
             return $this->printRoute($destinationStation, $visitedStations);
         } else {
@@ -54,7 +62,6 @@ class SearchShortPathController extends Controller
 
                     if ($currentStation->intersections->isNotEmpty()) {
                         foreach ($currentStation->intersections as $intersection) {
-                            array_push($visitedStations, $intersection->name);
                             if (isset($previousStation)) {
                                 $stations = $intersection->stations->where('id', '<>', $previousStation->id);
                             } else {
