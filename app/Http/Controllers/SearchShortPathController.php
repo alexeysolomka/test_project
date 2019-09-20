@@ -62,6 +62,17 @@ class SearchShortPathController extends Controller
                     $this->calculateRoutes($currentStation->id, $currentStation->next, $destinationStation->id, $visitedStations);
                 }
             }
+            else
+            {
+                $stationName = array_pop($visitedStations);
+                $station = Station::where('name', $stationName)->first();
+                dump($station);
+                if(!in_array($stationName, $visitedStations))
+                {
+                    $this->calculateRoutes($station->id, $station->id, $destinationStation->id, $visitedStations);
+                }
+                $this->calculateRoutes($station->id, $station->next, $destinationStation->id, $visitedStations);
+            }
         }
     }
 
