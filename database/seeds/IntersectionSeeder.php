@@ -14,9 +14,18 @@ class IntersectionSeeder extends Seeder
     {
         DB::table('intersections')
             ->insert([
-                [ 'name' => 'Blue line' ],
-                [ 'name' => 'Green line' ],
-                [ 'name' => 'Red line' ]
+                [ 'name' => 'BlueToGreen' ],
+                [ 'name' => 'BlueToRed' ],
+                [ 'name' => 'BlueToYellow' ],
+                [ 'name' => 'GreenToBlue' ],
+                [ 'name' => 'GreenToRed' ],
+                [ 'name' => 'GreenToYellow' ],
+                [ 'name' => 'RedToBlue' ],
+                [ 'name' => 'RedToGreen' ],
+                [ 'name' => 'RedToYellow' ],
+                [ 'name' => 'YellowToBlue' ],
+                [ 'name' => 'YellowToGreen' ],
+                [ 'name' => 'YellowToRed' ]
             ]);
     }
 }

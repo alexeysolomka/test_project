@@ -17,7 +17,8 @@ class BranchSeeder extends Seeder
             ->insert([
                 ['name' => 'Kholodnogorskya'],
                 ['name' => 'Saltivska'],
-                ['name' => 'Oleksiivska']
+                ['name' => 'Oleksiivska'],
+                ['name' => 'Circle']
             ]);
     }
 }

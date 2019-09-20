@@ -130,6 +130,38 @@ class StationSeeder extends Seeder
                     'branch_id' => 3,
                     'name' => 'Oleksiivska'
                 ],
+                [
+                    'branch_id' => 4,
+                    'name' => 'Pesochyn'
+                ],
+                [
+                    'branch_id' => 4,
+                    'name' => 'New Houses'
+                ],
+                [
+                    'branch_id' => 4,
+                    'name' => 'Vorobiev Moutions'
+                ],
+                [
+                    'branch_id' => 4,
+                    'name' => 'Bezlydovka'
+                ],
+                [
+                    'branch_id' => 4,
+                    'name' => 'Saratov'
+                ],
+                [
+                    'branch_id' => 4,
+                    'name' => 'West Cost'
+                ],
+                [
+                    'branch_id' => 4,
+                    'name' => 'East Cost'
+                ],
+                [
+                    'branch_id' => 4,
+                    'name' => 'Getto'
+                ],
             ]);
     }
 }

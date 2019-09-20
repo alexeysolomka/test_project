@@ -28,6 +28,10 @@ class NextStationSeeder extends Seeder
             {
                 $station->next = $station->id + 1;
             }
+            if($station->id > 29 && $station->id < 37)
+            {
+                $station->next = $station->id + 1;
+            }
             $station->save();
         }
     }
