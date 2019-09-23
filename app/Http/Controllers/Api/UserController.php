@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\User as UserResource;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -21,8 +23,10 @@ class UserController extends Controller
         $this->userService = app(UserService::class);
     }
 
-    public function index($limit = null, $offset = null)
+    public function index(Request $request)
     {
+        $limit = $request->get('limit');
+        $offset = $request->get('offset');
         if (isset($limit) && isset($offset)) {
             $users = DB::table('users')
                 ->offset($offset)
@@ -31,14 +35,10 @@ class UserController extends Controller
             $users = DB::table('users')
                 ->limit($limit)
                 ->get();
-        }
-        elseif(isset($offset))
-        {
+        } elseif (isset($offset)) {
             $users = DB::table('users')
                 ->offset($offset)->get();
-        }
-        else
-        {
+        } else {
             $users = DB::table('users')
                 ->get();
         }
@@ -48,36 +48,106 @@ class UserController extends Controller
 
     public function profile()
     {
-        return auth()->user();
+        return new UserResource(auth()->user());
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $validation = Validator::make($request->all(),
+            [
+                'name' => 'required|min:3|string|max:255',
+            ]);
+        if($validation->fails())
+        {
+            $errors = $validation->errors();
+            return response()->json(['errors' => $errors]);
+        }
+        $data = $request->all();
+        $user = $this->userRepository->update(auth()->user()->id, $data);
+
+        return $user;
     }
 
     public function store(Request $request)
     {
+        $validation = Validator::make($request->all(),
+            [
+                'name' => 'required|min:3|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'avatar' => 'mimes:jpeg,jpg,png,gif',
+                'role_id' => 'required|exists:roles,id',
+                'password' => 'min:8|confirmed|regex:/^(?=.*[0-9])(?=.*[a-zA-Z])\w{8,}$/',
+            ]);
+        if($validation->fails())
+        {
+            $errors = $validation->errors();
+            return response()->json(['errors' => $errors]);
+        }
         $data = $request->all();
         $user = $this->userRepository->create($data);
 
-        return $user;
+        return new UserResource($user);
     }
 
     public function show($id)
     {
         $response = $this->userService->getUserForEdit($id);
 
+        if ($response instanceof User) {
+            return new UserResource($response);
+        }
+
         return $response;
     }
 
     public function update(Request $request, $id)
     {
-        $data = $request->all();
-        $user = $this->userRepository->update($id, $data);
+        $validation = Validator::make($request->all(),
+            [
+                'name' => 'required|min:3|string|max:255',
+            ]);
+        if($validation->fails())
+        {
+            $errors = $validation->errors();
+            return response()->json(['errors' => $errors]);
+        }
 
-        return $user;
+        $data = $request->all();
+        if (auth()->user()->checkRole('moderator')) {
+
+            $user = User::find($id);
+            if ($user->role->name != 'admin') {
+                $user->update($data);
+                return new UserResource($user);
+            }
+            return response('Unauthorized', 401);
+        } elseif(auth()->user()->checkRole('admin')) {
+            $user = User::find($id);
+            $user->update($data);
+
+            return new UserResource($user);
+        }
+        else
+        {
+            return response()->json("Unauthorized", 401);
+        }
     }
 
     public function destroy($id)
     {
         $user = User::find($id);
-        $user->delete($id);
-        return $user;
+        if (auth()->user()->checkRole('moderator')) {
+            if ($user->role->name != 'admin') {
+                if ($user->delete($id)) {
+                    return new UserResource($user);
+                }
+            }
+            return response('Unauthorized', 401);
+        } else {
+            if ($user->delete($id)) {
+                return new UserResource($user);
+            }
+            return "Error";
+        }
     }
 }

@@ -74,8 +74,8 @@ class PermissionTableSeeder extends Seeder
                     'method' => 'destroy'
                 ],
                 [
-                    'controller' => 'App\Http\Controllers\Api\LoginController',
-                    'method' => 'logout'
+                    'controller' => 'App\Http\Controllers\Api\UserController',
+                    'method' => 'updateProfile'
                 ],
             ]);
 
@@ -110,9 +110,8 @@ class PermissionTableSeeder extends Seeder
         $apiEditProfilePermission = Permission::where('controller', 'App\Http\Controllers\Api\UserController')
             ->where('method', 'profile')->first()->id;
         $apiUpdateProfilePermission = Permission::where('controller', 'App\Http\Controllers\Api\UserController')
-            ->where('method', 'update')->first()->id;
-        $apiLogoutPermission = Permission::where('controller', 'App\Http\Controllers\Api\LoginController')
-            ->where('method', 'logout')->first()->id;
+            ->where('method', 'updateProfile')->first()->id;
+
         PermissionRole::create([
             'permission_id' => $indexPagePermission,
             'role_id' => $roleUser->id
@@ -140,10 +139,6 @@ class PermissionTableSeeder extends Seeder
         ]);
         PermissionRole::create([
             'permission_id' => $apiUpdateProfilePermission,
-            'role_id' => $roleUser->id
-        ]);
-        PermissionRole::create([
-            'permission_id' => $apiLogoutPermission,
             'role_id' => $roleUser->id
         ]);
     }
