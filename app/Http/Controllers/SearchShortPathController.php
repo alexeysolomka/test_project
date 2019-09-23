@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 
 class SearchShortPathController extends Controller
 {
-    private $paths = [];
-    private $path;
-
     public function index()
     {
         $stations = Station::all();
@@ -21,69 +18,85 @@ class SearchShortPathController extends Controller
     {
         $from = $request->from;
         $to = $request->to;
-        $path = [];
 
         $stationFrom = Station::find($from);
         $stationTo = Station::find($to);
 
         $routes = [];
-        $stations = Station::all();
-        $visited = [];
-        $this->calculateRoutes(null, $stationFrom->id, $stationTo->id, $visited);
-        if (count($this->paths) > 0) {
-            return min($this->paths);
-        } else {
-            return "No need to travel. You are already where you wanted to be :)";
-        }
-    }
+        $visitedStations = [];
 
-    private function calculateRoutes($previousStation, $currentStation, $destinationStation, $visitedStations = [])
-    {
-        $previousStation = Station::find($previousStation);
-        $currentStation = Station::find($currentStation);
-        $destinationStation = Station::find($destinationStation);
+        $this->calculateRoutes(null, $stationFrom->id, $stationTo->id, $visitedStations, $routes);
 
-        if ($currentStation->id == $destinationStation->id) {
-            return $this->printRoute($destinationStation, $visitedStations);
-        } else {
-            if (isset($currentStation->next)) {
-                if (!in_array($currentStation->name, $visitedStations)) {
-                    array_push($visitedStations, $currentStation->name);
-                    foreach ($currentStation->intersections as $intersection) {
-                        if (isset($previousStation)) {
-                            $stations = $intersection->stations->where('id', '<>', $previousStation->id);
-                        } else {
-                            $stations = $intersection->stations->where('id', '<>', $currentStation->id);
-                        }
-                        foreach ($stations as $station) {
-                            $this->calculateRoutes($currentStation->id, $station->id, $destinationStation->id, $visitedStations);
-                        }
-                    }
-                    $this->calculateRoutes($currentStation->id, $currentStation->next, $destinationStation->id, $visitedStations);
-                }
-            }
-            else
+        if(count($routes) > 0)
+        {
+            $shortestRoute = min($routes);
+
+            foreach($shortestRoute as $route)
             {
-                $stationName = array_pop($visitedStations);
-                $station = Station::where('name', $stationName)->first();
-                dump($station);
-                if(!in_array($stationName, $visitedStations))
-                {
-                    $this->calculateRoutes($station->id, $station->id, $destinationStation->id, $visitedStations);
-                }
-                $this->calculateRoutes($station->id, $station->next, $destinationStation->id, $visitedStations);
+                echo $route . '->';
             }
         }
     }
 
-    private function printRoute($destinationStation, $visitedStations)
+    private function calculateRoutes($previousStationId, $currentStationId, $destinationStationId, & $visitedStationsIds, & $routes)
     {
-        if (!$visitedStations) {
-            echo "No need to travel. You are already where you wanted to be :)";
+        $currentStation = Station::find($currentStationId);
+        $destinationStation = Station::find($destinationStationId);
+        if ($currentStation->id == $destinationStation->id) {
+            $this->persistRoute($destinationStation, $visitedStationsIds, $routes);
         } else {
-            array_push($visitedStations, $destinationStation->name);
-            array_push($this->paths, $visitedStations);
-            return $this->paths;
+            $stations = [];
+            if(isset($currentStation->next))
+            {
+                $stationNext = Station::find($currentStation->next);
+                array_push($stations, $stationNext);
+            }
+            $prevStations = Station::where('next', $currentStation->id)->get();
+            if($prevStations->isNotEmpty())
+            {
+                array_push($stations, $prevStations->first());
+            }
+            if (isset($currentStation->intersections)) {
+                foreach ($currentStation->intersections as $intersection) {
+                    foreach ($intersection->stations as $intersectionStation) {
+                        if($intersectionStation->id == $currentStation->id)
+                        {
+                            continue;
+                        }
+                        array_push($stations, $intersectionStation);
+                    }
+                }
+            }
+            if (!empty($stations)) {
+                if (!in_array($currentStation->id, $visitedStationsIds)) {
+                    array_push($visitedStationsIds, $currentStation->id);
+
+                    foreach($stations as $nextStation)
+                    {
+                        if($previousStationId != null && $previousStationId == $nextStation->id)
+                        {
+                            continue;
+                        }
+                        $this->calculateRoutes($currentStation->id, $nextStation->id, $destinationStationId, $visitedStationsIds, $routes);
+                    }
+                    array_pop($visitedStationsIds);
+                }
+            }
+        }
+    }
+
+    private function persistRoute($destinationStation, & $visitedStationIds, & $routes)
+    {
+        if (!$visitedStationIds) {
+//            echo "No need to travel. You are already where you wanted to be :)";
+        } else {
+            $arrayOfStations = [];
+            for($i = 0; $i <= count($visitedStationIds) - 1; $i++)
+            {
+                array_push($arrayOfStations, Station::find($visitedStationIds[$i])->name);
+            }
+            array_push($arrayOfStations, $destinationStation->name);
+            array_push($routes, $arrayOfStations);
         }
     }
 }
