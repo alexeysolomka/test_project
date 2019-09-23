@@ -88,7 +88,7 @@ class SearchShortPathController extends Controller
     private function persistRoute($destinationStation, & $visitedStationIds, & $routes)
     {
         if (!$visitedStationIds) {
-//            echo "No need to travel. You are already where you wanted to be :)";
+            echo "No need to travel. You are already where you wanted to be :)";
         } else {
             $arrayOfStations = [];
             for($i = 0; $i <= count($visitedStationIds) - 1; $i++)
