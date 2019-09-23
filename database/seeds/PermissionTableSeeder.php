@@ -49,6 +49,34 @@ class PermissionTableSeeder extends Seeder
                     'controller' => 'App\Http\Controllers\UserController',
                     'method' => 'removeAvatar'
                 ],
+                [
+                    'controller' => 'App\Http\Controllers\Api\UserController',
+                    'method' => 'index'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\Api\UserController',
+                    'method' => 'store'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\Api\UserController',
+                    'method' => 'show'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\Api\UserController',
+                    'method' => 'profile'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\Api\UserController',
+                    'method' => 'update'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\Api\UserController',
+                    'method' => 'destroy'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\Api\LoginController',
+                    'method' => 'logout'
+                ],
             ]);
 
         $permissions = Permission::all();
@@ -68,10 +96,23 @@ class PermissionTableSeeder extends Seeder
                 'role_id' => $roleModerator->id
             ]);
         }
-        $indexPagePermission = Permission::where('method', 'index')->first()->id;
-        $editProfilePermission = Permission::where('method', 'profile')->first()->id;
-        $updateProfilePermission = Permission::where('method', 'update')->first()->id;
-        $removeAvatarPermission = Permission::where('method', 'removeAvatar')->first()->id;
+        $indexPagePermission = Permission::where('controller', 'App\Http\Controllers\HomeController')
+            ->where('method', 'index')->first()->id;
+        $editProfilePermission = Permission::where('controller', 'App\Http\Controllers\UserController')
+            ->where('method', 'profile')->first()->id;
+        $updateProfilePermission = Permission::where('controller', 'App\Http\Controllers\UserController')
+            ->where('method', 'update')->first()->id;
+        $removeAvatarPermission = Permission::where('controller', 'App\Http\Controllers\UserController')
+            ->where('method', 'removeAvatar')->first()->id;
+
+        $apiIndexPagePermission = Permission::where('controller', 'App\Http\Controllers\Api\UserController')
+            ->where('method', 'index')->first()->id;
+        $apiEditProfilePermission = Permission::where('controller', 'App\Http\Controllers\Api\UserController')
+            ->where('method', 'profile')->first()->id;
+        $apiUpdateProfilePermission = Permission::where('controller', 'App\Http\Controllers\Api\UserController')
+            ->where('method', 'update')->first()->id;
+        $apiLogoutPermission = Permission::where('controller', 'App\Http\Controllers\Api\LoginController')
+            ->where('method', 'logout')->first()->id;
         PermissionRole::create([
             'permission_id' => $indexPagePermission,
             'role_id' => $roleUser->id
@@ -86,6 +127,23 @@ class PermissionTableSeeder extends Seeder
         ]);
         PermissionRole::create([
             'permission_id' => $removeAvatarPermission,
+            'role_id' => $roleUser->id
+        ]);
+        // API
+        PermissionRole::create([
+            'permission_id' => $apiIndexPagePermission,
+            'role_id' => $roleUser->id
+        ]);
+        PermissionRole::create([
+            'permission_id' => $apiEditProfilePermission,
+            'role_id' => $roleUser->id
+        ]);
+        PermissionRole::create([
+            'permission_id' => $apiUpdateProfilePermission,
+            'role_id' => $roleUser->id
+        ]);
+        PermissionRole::create([
+            'permission_id' => $apiLogoutPermission,
             'role_id' => $roleUser->id
         ]);
     }
