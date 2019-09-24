@@ -54,6 +54,7 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'havePermission' => \App\Http\Middleware\RolesAuth::class,
         'canModerator' => \App\Http\Middleware\canModerator::class,
+        'methodNotAllowed' => \App\Http\Middleware\MethodNotAllowed::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

@@ -68,7 +68,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $user = auth()->user();
-        $validation = Validator::make($request->all(), [$user->createUserRules()]);
+        $validation = Validator::make($request->all(), $user->createUserRules());
         if($validation->fails())
         {
             $errors = $validation->errors();
