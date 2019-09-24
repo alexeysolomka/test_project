@@ -36,8 +36,7 @@ class UserController extends Controller
                 ->limit($limit)
                 ->get();
         } elseif (isset($offset)) {
-            $users = DB::table('users')
-                ->offset($offset)->get();
+            return response()->json('Bad request. If is set offset then must have limit.', 400);
         } else {
             $users = DB::table('users')
                 ->get();
