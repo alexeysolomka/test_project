@@ -2,10 +2,9 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -47,11 +46,31 @@ class User extends Authenticatable
     {
         $role = Role::where('name', $roleName)->first();
 
-        if(!empty($roleName))
-        {
+        if (!empty($roleName)) {
             return auth()->user()->role_id == $role->id;
         }
 
         return false;
+    }
+
+    public function createUserRules()
+    {
+        return [
+            'name' => 'required|min:3|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'avatar' => 'mimes:jpeg,jpg,png,gif',
+            'role_id' => 'required|exists:roles,id',
+            'password' => 'min:8|confirmed|regex:/^(?=.*[0-9])(?=.*[a-zA-Z])\w{8,}$/',
+        ];
+    }
+
+    public function updateUserRules()
+    {
+        return [
+            'name' => 'required|min:3|string|max:255',
+            'role_id' => 'sometimes|integer|exists:roles,id',
+            'avatar' => 'mimes:jpeg,jpg,png,gif',
+            'email' => 'required|string|email|max:255|unique:users,id' . $this->id,
+        ];
     }
 }

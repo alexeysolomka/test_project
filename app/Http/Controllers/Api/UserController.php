@@ -53,10 +53,8 @@ class UserController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $validation = Validator::make($request->all(),
-            [
-                'name' => 'required|min:3|string|max:255',
-            ]);
+        $user = auth()->user();
+        $validation = Validator::make($request->all(), $user->updateUserRules());
         if($validation->fails())
         {
             $errors = $validation->errors();
@@ -70,14 +68,8 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(),
-            [
-                'name' => 'required|min:3|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'avatar' => 'mimes:jpeg,jpg,png,gif',
-                'role_id' => 'required|exists:roles,id',
-                'password' => 'min:8|confirmed|regex:/^(?=.*[0-9])(?=.*[a-zA-Z])\w{8,}$/',
-            ]);
+        $user = auth()->user();
+        $validation = Validator::make($request->all(), $user->createUserRules());
         if($validation->fails())
         {
             $errors = $validation->errors();
@@ -102,10 +94,8 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validation = Validator::make($request->all(),
-            [
-                'name' => 'required|min:3|string|max:255',
-            ]);
+        $user = auth()->user();
+        $validation = Validator::make($request->all(), $user->updateUserRules());
         if($validation->fails())
         {
             $errors = $validation->errors();

@@ -23,11 +23,6 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|min:3|string|max:255',
-            'role_id' => 'sometimes|integer|exists:roles,id',
-            'avatar' => 'mimes:jpeg,jpg,png,gif',
-            'email' => 'required|string|email|max:255|unique:users,id' . $this->id,
-        ];
+        return auth()->user()->updateUserRules();
     }
 }

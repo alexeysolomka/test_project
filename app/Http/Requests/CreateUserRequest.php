@@ -23,12 +23,6 @@ class CreateUserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|min:3|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'avatar' => 'mimes:jpeg,jpg,png,gif',
-            'role_id' => 'required|exists:roles,id',
-            'password' => 'min:8|confirmed|regex:/^(?=.*[0-9])(?=.*[a-zA-Z])\w{8,}$/',
-        ];
+        return auth()->user()->createUserRules();
     }
 }
