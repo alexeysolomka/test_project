@@ -39,7 +39,7 @@ class UserService
                 break;
             }
             case 'moderator': {
-                $user = User::find($userId);
+                $user = User::findOrFail($userId);
                 if($user->role->name != 'admin' && $user->role->name != 'moderator') break;
             }
             default: {
