@@ -23,6 +23,6 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
-        return auth()->user()->updateUserRules();
+        return auth()->user()->updateUserRules($this->id);
     }
 }

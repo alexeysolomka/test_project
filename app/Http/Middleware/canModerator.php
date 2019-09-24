@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\User;
 use Closure;
 
-class CanUpdate
+class canModerator
 {
     /**
      * Handle an incoming request.
@@ -15,7 +16,13 @@ class CanUpdate
      */
     public function handle($request, Closure $next)
     {
-        dd($request);
+        $user = User::find($request->userId);
+
+        if($user->role->name == 'admin')
+        {
+            return response()->json('Forbidden', 403);
+        }
+
         return $next($request);
     }
 }

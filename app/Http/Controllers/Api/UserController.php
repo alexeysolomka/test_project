@@ -102,41 +102,19 @@ class UserController extends Controller
         }
 
         $data = $request->all();
-        if (auth()->user()->checkRole('moderator')) {
+        $user = User::find($id);
+        $user->update($data);
 
-            $user = User::find($id);
-            if ($user->role->name != 'admin') {
-                $user->update($data);
-                return new UserResource($user);
-            }
-            return response('Unauthorized', 401);
-        } elseif(auth()->user()->checkRole('admin')) {
-            $user = User::find($id);
-            $user->update($data);
-
-            return new UserResource($user);
-        }
-        else
-        {
-            return response()->json("Unauthorized", 401);
-        }
+        return new UserResource($user);
     }
 
     public function destroy($id)
     {
         $user = User::find($id);
-        if (auth()->user()->checkRole('moderator')) {
-            if ($user->role->name != 'admin') {
-                if ($user->delete($id)) {
-                    return new UserResource($user);
-                }
-            }
-            return response('Unauthorized', 401);
-        } else {
-            if ($user->delete($id)) {
-                return new UserResource($user);
-            }
-            return "Error";
+
+        if ($user->delete($id)) {
+            return new UserResource($user);
         }
+        return response()->json('Bad request.', 400);
     }
 }
