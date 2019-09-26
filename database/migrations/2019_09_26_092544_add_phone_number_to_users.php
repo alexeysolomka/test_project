@@ -14,7 +14,7 @@ class AddPhoneNumberToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('phone_number')->unique();
+            $table->string('phone_number')->unique()->nullable();
         });
     }
 
