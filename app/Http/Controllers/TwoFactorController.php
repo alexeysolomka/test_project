@@ -15,12 +15,13 @@ class TwoFactorController extends Controller
 
         if($request->input('2fa') == Auth::user()->token_2fa){
             $user = Auth::user();
+            $user->token_2fa = null;
             $user->token_2fa_expiry = Carbon::now()->addMinutes(config('session.lifetime'));
             $user->save();
 
             return redirect('/home');
         } else {
-            return redirect('/2fa')->with('message', 'Incorrect code.');
+            return redirect('/2fa')->with('error', 'Incorrect code.');
         }
     }
 
