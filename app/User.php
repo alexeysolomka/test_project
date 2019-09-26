@@ -16,7 +16,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'is_active', 'role_id', 'avatar'
+        'name', 'email', 'phone_number', 'password', 'is_active', 'role_id', 'avatar',
+        'token_2fa', 'token_2fa_expiry'
     ];
 
     /**
@@ -73,5 +74,10 @@ class User extends Authenticatable
             'avatar' => 'mimes:jpeg,jpg,png,gif',
             'email' => 'required|string|email|max:255|unique:users,id' . $uniqueEmailId,
         ];
+    }
+
+    public function verifyAccountRule()
+    {
+        return ['2fa' => 'required'];
     }
 }

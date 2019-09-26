@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\TwoFactoryVerify;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -52,6 +53,7 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
+        '2fa' => \App\Http\Middleware\TwoFactoryVerify::class,
         'havePermission' => \App\Http\Middleware\RolesAuth::class,
         'canModerator' => \App\Http\Middleware\canModerator::class,
         'methodNotAllowed' => \App\Http\Middleware\MethodNotAllowed::class,

@@ -16,14 +16,16 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('/2fa', 'TwoFactorController@showForm');
+Route::post('/2fa', 'TwoFactorController@verifyTwoFactor')->middleware('auth');
 
 Route::get('/home', 'HomeController@index')
-    ->middleware('havePermission')
+    ->middleware(['2fa', 'havePermission'])
     ->name('home');
 
 $userConfig = [
     'prefix' => 'users',
-    'middleware' => 'havePermission'
+    'middleware' => ['2fa', 'havePermission']
 ];
 
 Route::group($userConfig, function () {
