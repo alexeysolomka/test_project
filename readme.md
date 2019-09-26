@@ -4,7 +4,8 @@
 #
 **Run php artisan db:seed --class=RolesTableSeeder**
 #
-**Run php artisan db:seed --class=UserSeeder**
+In user seeder change phone number to your phone number after run 
+**php artisan db:seed --class=UserSeeder**
 #
 **Run php artisan db:seed --class=FakeUsers**
 #
