@@ -78,6 +78,16 @@
                                 {{ __('Logout') }}
                             </a>
 
+                            @if(auth()->user()->checkRole('admin'))
+                            <a class="dropdown-item" href="{{ route('stations.index') }}">
+                            Stations
+                            </a>
+                            <a class="dropdown-item" href="{{ route('branches.index') }}">
+                            Branches
+                            </a>
+                            @endif
+
+
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>

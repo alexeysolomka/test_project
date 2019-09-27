@@ -26,7 +26,8 @@ class CreateStationsTable extends Migration
             $table
                 ->foreign('next')
                 ->references('id')
-                ->on('stations');
+                ->on('stations')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

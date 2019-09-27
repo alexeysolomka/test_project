@@ -12,4 +12,18 @@ class Branch extends Model
     {
         return $this->hasMany(Station::class);
     }
+
+    public static function createValidationRules()
+    {
+        return [
+            'name' => 'required|unique:branches'
+        ];
+    }
+
+    public static function updateValidationRules($branch_id)
+    {
+        return [
+            'name' => 'required|unique:branches,id' . $branch_id
+        ];
+    }
 }

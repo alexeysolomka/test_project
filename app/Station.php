@@ -27,4 +27,20 @@ class Station extends Model
             'intersection_id'
             );
     }
+
+    public static function createValidationRules()
+    {
+        return [
+            'branch_id' => 'required|exists:branches,id',
+            'name' => 'required|unique:stations,id'
+        ];
+    }
+
+    public static function updateValidationRules($station_id)
+    {
+        return [
+            'branch_id' => 'required|exists:branches,id',
+            'name' => 'required|unique:stations,id' . $station_id
+        ];
+    }
 }

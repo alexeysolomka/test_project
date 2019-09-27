@@ -77,6 +77,56 @@ class PermissionTableSeeder extends Seeder
                     'controller' => 'App\Http\Controllers\Api\UserController',
                     'method' => 'updateProfile'
                 ],
+                // CRUD Stations
+                [
+                    'controller' => 'App\Http\Controllers\StationController',
+                    'method' => 'index'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\StationController',
+                    'method' => 'create'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\StationController',
+                    'method' => 'store'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\StationController',
+                    'method' => 'edit'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\StationController',
+                    'method' => 'update'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\StationController',
+                    'method' => 'delete'
+                ],
+                // CRUD Branches
+                [
+                    'controller' => 'App\Http\Controllers\BranchController',
+                    'method' => 'index'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\BranchController',
+                    'method' => 'create'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\BranchController',
+                    'method' => 'store'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\BranchController',
+                    'method' => 'edit'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\BranchController',
+                    'method' => 'update'
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\BranchController',
+                    'method' => 'delete'
+                ],
             ]);
 
         $permissions = Permission::all();
@@ -85,17 +135,26 @@ class PermissionTableSeeder extends Seeder
         $roleModerator = Role::where('name', 'moderator')->first();
         $roleUser = Role::where('name', 'user')->first();
 
+        //admin permissions
         foreach($permissions as $permission)
         {
             PermissionRole::create([
                 'permission_id' => $permission->id,
                 'role_id' => $roleAdmin->id
-            ]);
+            ]);    
+        }
+
+        //moderator permissions
+        $permissions = Permission::where('controller', '!=', 'App\Http\Controllers\StationController')
+        ->where('controller', '!=', 'App\Http\Controllers\BranchController')->get();
+        foreach($permissions as $permission)
+        {
             PermissionRole::create([
                 'permission_id' => $permission->id,
                 'role_id' => $roleModerator->id
             ]);
         }
+        //User permissions
         $indexPagePermission = Permission::where('controller', 'App\Http\Controllers\HomeController')
             ->where('method', 'index')->first()->id;
         $editProfilePermission = Permission::where('controller', 'App\Http\Controllers\UserController')
