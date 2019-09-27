@@ -74,7 +74,7 @@ class User extends Authenticatable
             'role_id' => 'sometimes|integer|exists:roles,id',
             'avatar' => 'mimes:jpeg,jpg,png,gif',
             'phone_number' => 'required|unique:users,id' . $uniqueEmailId,
-            'email' => 'required|string|email|max:255|unique:users,id' . $uniqueEmailId,
+            'email' => 'required|string|email|max:255|unique:users,id,' . $uniqueEmailId,
         ];
     }
 

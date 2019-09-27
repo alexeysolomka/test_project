@@ -23,7 +23,7 @@ class Branch extends Model
     public static function updateValidationRules($branch_id)
     {
         return [
-            'name' => 'required|unique:branches,id' . $branch_id
+            'name' => 'required|unique:branches,id,' . $branch_id
         ];
     }
 }

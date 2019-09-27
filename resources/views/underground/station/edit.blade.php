@@ -36,7 +36,7 @@
                     </div>
                     <div class="form-group">
                             {{ Form::label('next', 'Next') }}
-                            {{ Form::select('next', $stations,'',
+                            {{ Form::select('next', $stations, $station->next,
                               ['class' => 'form-control'])}}
                     </div>
                     {{ Form::button('Update station', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}

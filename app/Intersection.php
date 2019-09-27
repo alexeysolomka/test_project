@@ -36,7 +36,7 @@ class Intersection extends Model
     public static function updateValidationRules($id)
     {
         return [
-            'name' => 'required|unique:intersections,id' . $id
+            'name' => 'required|unique:intersections,id,' . $id
         ];
     }
 }
