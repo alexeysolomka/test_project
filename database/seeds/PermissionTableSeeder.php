@@ -127,6 +127,39 @@ class PermissionTableSeeder extends Seeder
                     'controller' => 'App\Http\Controllers\BranchController',
                     'method' => 'delete'
                 ],
+                // Intersections
+                [
+                    'controller' => 'App\Http\Controllers\IntersectionController',
+                    'method' => 'index',
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\IntersectionController',
+                    'method' => 'create',
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\IntersectionController',
+                    'method' => 'store',
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\IntersectionController',
+                    'method' => 'edit',
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\IntersectionController',
+                    'method' => 'update',
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\IntersectionController',
+                    'method' => 'delete',
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\IntersectionController',
+                    'method' => 'addStationToIntersection',
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\IntersectionController',
+                    'method' => 'deleteStationFromIntersection',
+                ],
             ]);
 
         $permissions = Permission::all();
@@ -146,7 +179,9 @@ class PermissionTableSeeder extends Seeder
 
         //moderator permissions
         $permissions = Permission::where('controller', '!=', 'App\Http\Controllers\StationController')
-        ->where('controller', '!=', 'App\Http\Controllers\BranchController')->get();
+        ->where('controller', '!=', 'App\Http\Controllers\BranchController')
+        ->where('controller', '!=', 'App\Http\Controllers\IntersectionController')
+        ->get();
         foreach($permissions as $permission)
         {
             PermissionRole::create([

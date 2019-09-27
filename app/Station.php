@@ -32,7 +32,7 @@ class Station extends Model
     {
         return [
             'branch_id' => 'required|exists:branches,id',
-            'name' => 'required|unique:stations,id'
+            'name' => 'required|unique:stations'
         ];
     }
 

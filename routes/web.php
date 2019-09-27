@@ -68,6 +68,20 @@ Route::group($undegroundConfig, function () {
         Route::post('/delete/{station_id}', 'BranchController@delete')->name('branches.delete');
      });
 
+     $intersectionConfig = [
+        'prefix' => 'intersections'
+    ];
+    Route::group($intersectionConfig, function () {
+        Route::get('/', 'IntersectionController@index')->name('intersections.index');
+        Route::post('/add-station-to-intersection/{intersection_id}', 'IntersectionController@addStationToIntersection')->name('intersections.add_station');
+        Route::post('/delete-station-to-intersection/{intersection_id}/{station_id}', 'IntersectionController@deleteStationFromIntersection')->name('intersections.delete-station');
+        Route::get('/create', 'IntersectionController@create')->name('intersections.create');
+        Route::post('/store', 'IntersectionController@store')->name('intersections.store');
+        Route::get('/edit/{intersection_id}', 'IntersectionController@edit')->name('intersections.edit');
+        Route::post('/update/{intersection_id}', 'IntersectionController@update')->name('intersections.update');
+        Route::post('/delete/{intersection_id}', 'IntersectionController@delete')->name('intersections.delete');
+    });
+
     Route::get('/search_path_form', 'SearchShortPathController@index')->name('underground.searchIndex');
     Route::post('/search', 'SearchShortPathController@search')->name('underground.search');
 });

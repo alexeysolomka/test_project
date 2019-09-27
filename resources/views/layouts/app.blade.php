@@ -85,6 +85,9 @@
                             <a class="dropdown-item" href="{{ route('branches.index') }}">
                             Branches
                             </a>
+                            <a class="dropdown-item" href="{{ route('intersections.index') }}">
+                                    Intersections
+                                    </a>
                             @endif
 
 
