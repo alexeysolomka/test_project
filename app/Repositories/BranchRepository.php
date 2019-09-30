@@ -22,6 +22,7 @@ class BranchRepository implements ICoreRepository
     {
         $branch = Branch::create([
             'name' => $data['name'],
+            'metro_id' => $data['metro_id']
         ]);
 
         return $branch;
