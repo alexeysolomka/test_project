@@ -1,6 +1,7 @@
 <?php
 use App\Branch;
 use App\Intersection;
+use App\Metro;
 use App\Station;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -13,12 +14,48 @@ class StationSeeder extends Seeder
      */
     public function run()
     {
+        //Create metros
+        DB::table('metros')
+        ->insert([
+            ['location' => 'Kharkiv'],
+            ['location' => 'Kiev']
+        ]);
+
+        $kharkivMetro = Metro::where('location', 'Kharkiv')->first();
+        $kievMetro = Metro::where('location', 'Kiev')->first();
+
         DB::table('branches')
             ->insert([
-                ['name' => 'Kholodnogorskya'],
-                ['name' => 'Saltivska'],
-                ['name' => 'Oleksiivska'],
-                ['name' => 'Circle']
+                //Kharkiv metro
+                [
+                    'name' => 'Kholodnogorskya',
+                    'metro_id' => $kharkivMetro->id
+                ],
+                [
+                    'name' => 'Saltivska',
+                    'metro_id' => $kharkivMetro->id
+                ],
+                [
+                    'name' => 'Oleksiivska',
+                    'metro_id' => $kharkivMetro->id
+                ],
+                [
+                    'name' => 'Circle',
+                    'metro_id' => $kharkivMetro->id
+                ],
+                // Kiev Metro
+                [
+                    'name' => 'M1',
+                    'metro_id' => $kievMetro->id
+                ],
+                [
+                    'name' => 'M2',
+                    'metro_id' => $kievMetro->id
+                ],
+                [
+                    'name' => 'M3',
+                    'metro_id' => $kievMetro->id
+                ],
             ]);
         $branches = Branch::all();
         foreach ($branches as $branch) {
@@ -188,8 +225,149 @@ class StationSeeder extends Seeder
                         ],
                     ]);
             }
+            // Kiev metro
+            if($branch->name == 'M1')
+            {
+                DB::table('stations')
+                ->insert([
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Akadem'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Jytomyr'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Nuvku'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Vokzalna'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Universitat'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Theathre'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Kreshyatuk'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Arsenalna'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Dnipro'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Lisova'
+                    ],
+                ]);
+            }
+            if($branch->name == 'M2')
+            {
+                DB::table('stations')
+                ->insert([
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Heroes Dnipra'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Tarasa Shevchenka'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Poshtova'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Maidan Nezalejnosti'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Platz Lva Tolstogo'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Olimpiska'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Palatz Ukraine'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Lubidska'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Vasilivska'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Ipodrom'
+                    ],
+                ]);
+            }
+            if($branch->name == 'M3')
+            {
+                DB::table('stations')
+                ->insert([
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Surets'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Dorogozhuchi'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Golden Vorota'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Palatz Sporty'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Klovska'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Pecherska'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Druzhbu Narodiv'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Vudybichi'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Slavytuch'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Osokorku'
+                    ],
+                ]);
+            }
         }
-        $stations = Station::all();
+        // Kharkiv metro
+        $kharkivMetroBranches = $kharkivMetro->branches->pluck('id');
+        $stations = Station::whereIn('branch_id', $kharkivMetroBranches)->get();
         $station_end_id = Station::where('name', 'Prolet')->first()->id;
         foreach($stations as $station)
         {
@@ -325,6 +503,94 @@ class StationSeeder extends Seeder
                         'station_id' => $station->id
                     ]);
                 $station = Station::where('name', 'Pesochyn')->first();
+                DB::table('intersection_to_stations')
+                    ->insert([
+                        'intersection_id' => $intersection->id,
+                        'station_id' => $station->id
+                    ]);
+            }
+        }
+        //Kiev metro
+        $kievMetroBranches = $kievMetro->branches->pluck('id');
+        $stations = Station::whereIn('branch_id', $kievMetroBranches)->get();;
+        $station_end_id = Station::where('name', 'Lisova')->first()->id;
+        foreach($stations as $station)
+        {
+            if($station->id < $station_end_id)
+            {
+                $station->next = $station->id + 1;
+                $station->save();
+            }
+        }
+        $station_start = Station::where('name', 'Heroes Dnipra')->first()->id;
+        $station_end_id = Station::where('name', 'Ipodrom')->first()->id;
+        foreach($stations as $station)
+        {
+            if($station->id >= $station_start && $station->id < $station_end_id)
+            {
+                $station->next = $station->id + 1;
+                $station->save();
+            }
+        }
+        $station_start = Station::where('name', 'Surets')->first()->id;
+        $station_end_id = Station::where('name', 'Osokorku')->first()->id;
+        foreach($stations as $station)
+        {
+            if($station->id >= $station_start && $station->id < $station_end_id)
+            {
+                $station->next = $station->id + 1;
+                $station->save();
+            }
+        }
+
+        DB::table('intersections')
+            ->insert([
+                [ 'name' => 'M1-M3' ],
+                [ 'name' => 'M1-M2' ],
+                [ 'name' => 'M2-M3' ],
+            ]);
+        $intersections = Intersection::all();
+        foreach($intersections as $intersection)
+        {
+            if($intersection->name == 'M1-M3')
+            {
+                $station = Station::where('name', 'Theathre')->first();
+                DB::table('intersection_to_stations')
+                    ->insert([
+                        'intersection_id' => $intersection->id,
+                        'station_id' => $station->id
+                    ]);
+                $station = Station::where('name', 'Golden Vorota')->first();
+                DB::table('intersection_to_stations')
+                    ->insert([
+                        'intersection_id' => $intersection->id,
+                        'station_id' => $station->id
+                    ]);
+            }
+            if($intersection->name == 'M1-M2')
+            {
+                $station = Station::where('name', 'Kreshyatuk')->first();
+                DB::table('intersection_to_stations')
+                    ->insert([
+                        'intersection_id' => $intersection->id,
+                        'station_id' => $station->id
+                    ]);
+                $station = Station::where('name', 'Maidan Nezalejnosti')->first();
+                DB::table('intersection_to_stations')
+                    ->insert([
+                        'intersection_id' => $intersection->id,
+                        'station_id' => $station->id
+                    ]);
+            }
+            if($intersection->name == 'M2-M3')
+            {
+                $station = Station::where('name', 'Platz Lva Tolstogo')->first();
+                DB::table('intersection_to_stations')
+                    ->insert([
+                        'intersection_id' => $intersection->id,
+                        'station_id' => $station->id
+                    ]);
+                $station = Station::where('name', 'Palatz Sporty')->first();
                 DB::table('intersection_to_stations')
                     ->insert([
                         'intersection_id' => $intersection->id,

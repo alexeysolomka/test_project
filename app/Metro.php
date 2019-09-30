@@ -15,7 +15,7 @@ class Metro extends Model
      */
     protected $fillable = ['location'];
 
-    public function stations()
+    public function branches()
     {
         return $this->hasMany(Branch::class);
     }

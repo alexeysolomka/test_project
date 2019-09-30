@@ -21,7 +21,7 @@ class CreateStationsTable extends Migration
                 ->references('id')
                 ->on('branches')
                 ->onDelete('cascade');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->unsignedInteger('next')->nullable();
             $table
                 ->foreign('next')
