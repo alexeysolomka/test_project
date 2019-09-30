@@ -24,6 +24,6 @@ class CreateStationRequest extends FormRequest
      */
     public function rules()
     {
-        return Station::createValidationRules();
+        return Station::$createRules;
     }
 }

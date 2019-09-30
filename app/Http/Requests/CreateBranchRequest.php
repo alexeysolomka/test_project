@@ -24,6 +24,6 @@ class CreateBranchRequest extends FormRequest
      */
     public function rules()
     {
-        return Branch::createValidationRules();
+        return Branch::$createRules;
     }
 }

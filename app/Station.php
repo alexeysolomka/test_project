@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Station extends Model
 {
+    public static $createRules = [
+        'branch_id' => 'required|exists:branches,id',
+        'name' => 'required|unique:stations'
+    ];
+    public static $updateRules = [
+        'branch_id' => 'required|exists:branches,id',
+        'name' => 'required|unique:stations,id,'
+    ];
     protected $fillable = ['branch_id', 'name', 'next'];
 
     public function branch()
@@ -26,21 +34,5 @@ class Station extends Model
             'id',
             'intersection_id'
             );
-    }
-
-    public static function createValidationRules()
-    {
-        return [
-            'branch_id' => 'required|exists:branches,id',
-            'name' => 'required|unique:stations'
-        ];
-    }
-
-    public static function updateValidationRules($station_id)
-    {
-        return [
-            'branch_id' => 'required|exists:branches,id',
-            'name' => 'required|unique:stations,id,' . $station_id
-        ];
     }
 }

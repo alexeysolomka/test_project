@@ -24,6 +24,8 @@ class UpdateStationRequest extends FormRequest
      */
     public function rules()
     {
-        return Station::updateValidationRules($this->station_id);
+        $rules = Station::$updateRules;
+        $rules['name'] .= $this->station_id;
+        return $rules;
     }
 }

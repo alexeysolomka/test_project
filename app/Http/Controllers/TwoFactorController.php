@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -10,7 +11,7 @@ class TwoFactorController extends Controller
 {
     public function verifyTwoFactor(Request $request)
     {
-        $verifyAccountRule = auth()->user()->verifyAccountRule();
+        $verifyAccountRule = User::$twoFactorVerifyRule;
         $request->validate($verifyAccountRule);
 
         if($request->input('2fa') == Auth::user()->token_2fa){

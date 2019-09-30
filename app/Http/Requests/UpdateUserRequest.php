@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserRequest extends FormRequest
@@ -23,6 +24,10 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
-        return auth()->user()->updateUserRules($this->id);
+        $rules = User::$updateRules;
+        $rules['phone'] .= $this->id;
+        $rules['email'] .= $this->id;
+
+        return $rules;
     }
 }

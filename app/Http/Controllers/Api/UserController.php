@@ -53,7 +53,11 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $user = auth()->user();
-        $validation = Validator::make($request->all(), [$user->updateUserRules($user->id)]);
+        $rules = User::$updateRules;
+        $rules['phone'] .= $user->id;
+        $rules['email'] .= $user->id;
+
+        $validation = Validator::make($request->all(), $rules);
         if($validation->fails())
         {
             $errors = $validation->errors();
@@ -67,8 +71,8 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $user = auth()->user();
-        $validation = Validator::make($request->all(), $user->createUserRules());
+        $rules = User::$createRules;
+        $validation = Validator::make($request->all(), $rules);
         if($validation->fails())
         {
             $errors = $validation->errors();
@@ -93,8 +97,11 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = auth()->user();
-        $validation = Validator::make($request->all(), $user->updateUserRules($id));
+        $rules = User::$updateRules;
+        $rules['phone'] .= $id;
+        $rules['email'] .= $id;
+
+        $validation = Validator::make($request->all(), $rules);
         if($validation->fails())
         {
             $errors = $validation->errors();

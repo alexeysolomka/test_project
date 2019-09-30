@@ -10,6 +10,25 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
+    public static $createRules = [
+        'name' => 'required|min:3|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'is_active' => 'required|boolean',
+        'avatar' => 'mimes:jpeg,jpg,png,gif',
+        'phone_number' => 'required|unique:users',
+        'role_id' => 'required|exists:roles,id',
+        'password' => 'min:8|confirmed|regex:/^(?=.*[0-9])(?=.*[a-zA-Z])\w{8,}$/',
+    ];
+    public static $updateRules = [
+        'name' => 'required|min:3|string|max:255',
+        'role_id' => 'sometimes|integer|exists:roles,id',
+        'avatar' => 'mimes:jpeg,jpg,png,gif',
+        'phone_number' => 'required|unique:users,id,',
+        'email' => 'required|string|email|max:255|unique:users,id,',
+    ];
+    public static $twoFactorVerifyRule = [
+        '2fa' => 'required'
+    ];
     /**
      * The attributes that are mass assignable.
      *
@@ -52,34 +71,5 @@ class User extends Authenticatable
         }
 
         return false;
-    }
-
-    public function createUserRules()
-    {
-        return [
-            'name' => 'required|min:3|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'is_active' => 'required|boolean',
-            'avatar' => 'mimes:jpeg,jpg,png,gif',
-            'phone_number' => 'required|unique:users',
-            'role_id' => 'required|exists:roles,id',
-            'password' => 'min:8|confirmed|regex:/^(?=.*[0-9])(?=.*[a-zA-Z])\w{8,}$/',
-        ];
-    }
-
-    public function updateUserRules($uniqueEmailId)
-    {
-        return [
-            'name' => 'required|min:3|string|max:255',
-            'role_id' => 'sometimes|integer|exists:roles,id',
-            'avatar' => 'mimes:jpeg,jpg,png,gif',
-            'phone_number' => 'required|unique:users,id' . $uniqueEmailId,
-            'email' => 'required|string|email|max:255|unique:users,id,' . $uniqueEmailId,
-        ];
-    }
-
-    public function verifyAccountRule()
-    {
-        return ['2fa' => 'required'];
     }
 }

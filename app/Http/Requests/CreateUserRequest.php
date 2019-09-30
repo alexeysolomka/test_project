@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateUserRequest extends FormRequest
@@ -23,6 +24,6 @@ class CreateUserRequest extends FormRequest
      */
     public function rules()
     {
-        return auth()->user()->createUserRules();
+        return User::$createRules;
     }
 }

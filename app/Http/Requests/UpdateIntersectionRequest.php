@@ -24,6 +24,8 @@ class UpdateIntersectionRequest extends FormRequest
      */
     public function rules()
     {
-        return Intersection::updateValidationRules($this->id);
+        $rules = Intersection::$updateRules;
+        $rules['name'] .= $this->id;
+        return $rules;
     }
 }

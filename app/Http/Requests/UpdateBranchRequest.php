@@ -24,6 +24,8 @@ class UpdateBranchRequest extends FormRequest
      */
     public function rules()
     {
-        return Branch::updateValidationRules($this->id);
+        $rules = Branch::$updateRules;
+        $rules['name'] .= $this->id;
+        return $rules;
     }
 }

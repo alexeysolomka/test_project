@@ -24,6 +24,6 @@ class CreateIntersectionRequest extends FormRequest
      */
     public function rules()
     {
-        return Intersection::createValidationRules();
+        return Intersection::$createRules;
     }
 }

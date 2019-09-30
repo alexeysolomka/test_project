@@ -6,25 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Branch extends Model
 {
+    public static $createRules = ['name' => 'required|unique:branches'];
+    public static $updateRules = ['name' => 'required|unique:branches,id,'];
+
     protected $fillable = ['name', 'metro_id'];
 
     public function stations()
     {
         return $this->hasMany(Station::class);
-    }
-
-    public static function createValidationRules()
-    {
-        return [
-            'name' => 'required|unique:branches'
-        ];
-    }
-
-    public static function updateValidationRules($branch_id)
-    {
-        return [
-            'name' => 'required|unique:branches,id,' . $branch_id
-        ];
     }
 
     public function metro()
