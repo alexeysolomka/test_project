@@ -104,9 +104,26 @@ class SearchShortPathController extends Controller
             $arrayOfStations = [];
             for($i = 0; $i <= count($visitedStationIds) - 1; $i++)
             {
-                array_push($arrayOfStations, Station::find($visitedStationIds[$i])->name);
+                $station = Station::find($visitedStationIds[$i]);
+                $station_name = '';
+                $destination_name = "<span style=background:cyan;>$destinationStation->name</span>";
+                switch($station->branch->metro->location)
+                {
+                    case 'Kharkiv' : {
+                        $station_name = "<span style=background:cyan;>$station->name</span>";
+                        break;
+                    }
+                    case 'KharkivBus' : {
+                        $station_name = "<mark>$station->name</mark>";
+                        break;
+                    }
+                    default: {
+                        $station_name = $station->name;
+                    }
+                }
+                array_push($arrayOfStations, $station_name);
             }
-            array_push($arrayOfStations, $destinationStation->name);
+            array_push($arrayOfStations, $destination_name);
             array_push($routes, $arrayOfStations);
         }
     }

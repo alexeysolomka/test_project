@@ -18,10 +18,12 @@ class StationSeeder extends Seeder
         DB::table('metros')
         ->insert([
             ['location' => 'Kharkiv'],
+            ['location' => 'KharkivBus'],
             ['location' => 'Kiev']
         ]);
 
         $kharkivMetro = Metro::where('location', 'Kharkiv')->first();
+        $kharkivBus = Metro::where('location', 'KharkivBus')->first();
         $kievMetro = Metro::where('location', 'Kiev')->first();
 
         DB::table('branches')
@@ -42,6 +44,11 @@ class StationSeeder extends Seeder
                 [
                     'name' => 'Circle',
                     'metro_id' => $kharkivMetro->id
+                ],
+                // Kharkiv Bus
+                [
+                    'name' => 'Bus',
+                    'metro_id' => $kharkivBus->id
                 ],
                 // Kiev Metro
                 [
@@ -225,6 +232,39 @@ class StationSeeder extends Seeder
                         ],
                     ]);
             }
+            if($branch->name == 'Bus') {
+                DB::table('stations')
+                ->insert([
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Jutomirsker'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Oleksandorvske'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Kuyivkse'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Love park'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Moskalevksa'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Slobodskya'
+                    ],
+                    [
+                        'branch_id' => $branch->id,
+                        'name' => 'Vasilivska'
+                    ]
+                ]);
+            }
             // Kiev metro
             if($branch->name == 'M1')
             {
@@ -407,6 +447,17 @@ class StationSeeder extends Seeder
                 $station->save();
             }
         }
+        $kharkivBusBranches = $kharkivBus->branches->pluck('id');
+        $stations = Station::whereIn('branch_id', $kharkivBusBranches)->get();
+        $station_end_id = Station::where('name', 'Vasilivska')->first();
+        foreach($stations as $station)
+        {
+            if($station->id < $station_end_id->id)
+            {
+                $station->next = $station->id + 1;
+                $station->save();
+            }
+        }
         DB::table('intersections')
             ->insert([
                 [ 'name' => 'BlueToGreen' ],
@@ -415,10 +466,55 @@ class StationSeeder extends Seeder
                 [ 'name' => 'GreenToRed' ],
                 [ 'name' => 'GreenToYellow' ],
                 [ 'name' => 'RedToYellow' ],
+                [ 'name' => 'RedToBus'],
+                [ 'name' => 'GreenToBus'],
+                [ 'name' => 'BlueToBus']
             ]);
         $intersections = Intersection::all();
         foreach($intersections as $intersection)
         {
+            if($intersection->name == 'RedToBus') {
+                $stationMetro = Station::where('name', 'Radyanska')->first();
+                $stationBus = Station::where('name', 'Oleksandorvske')->first();
+                DB::table('intersection_to_stations')
+                ->insert([
+                    'intersection_id' => $intersection->id,
+                    'station_id' => $stationMetro->id
+                ]);
+                DB::table('intersection_to_stations')
+                ->insert([
+                    'intersection_id' => $intersection->id,
+                    'station_id' => $stationBus->id
+                ]);
+            }
+            if($intersection->name == 'GreenToBus') {
+                $stationMetro = Station::where('name', 'Plosha Povstania')->first();
+                $stationBus = Station::where('name', 'Love park')->first();
+                DB::table('intersection_to_stations')
+                ->insert([
+                    'intersection_id' => $intersection->id,
+                    'station_id' => $stationMetro->id
+                ]);
+                DB::table('intersection_to_stations')
+                ->insert([
+                    'intersection_id' => $intersection->id,
+                    'station_id' => $stationBus->id
+                ]);
+            }
+            if($intersection->name == 'BlueToBus') {
+                $stationMetro = Station::where('name', 'Academic Pavlova')->first();
+                $stationBus = Station::where('name', 'Vasilivska')->first();
+                DB::table('intersection_to_stations')
+                ->insert([
+                    'intersection_id' => $intersection->id,
+                    'station_id' => $stationMetro->id
+                ]);
+                DB::table('intersection_to_stations')
+                ->insert([
+                    'intersection_id' => $intersection->id,
+                    'station_id' => $stationBus->id
+                ]);
+            }
             if($intersection->name == 'BlueToGreen')
             {
                 $station = Station::where('name', 'Universitet')->first();

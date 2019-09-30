@@ -27,6 +27,7 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Branch</th>
+                            <th scope="col">Metro</th>
                             <th scope="col">Delete</th>
                             <th scope="col">Edit</th>
                         </tr>
@@ -36,6 +37,7 @@
                         <tr>
                             <th>{{ $branch->id }}</th>
                                 <td>{{ $branch->name }}</td>
+                                <td>{{ $branch->metro->location }}</td>
                                 <td>
                                     {{ Form::open(['action' => ['BranchController@delete', $branch->id], 'method' => 'POST'])}}
                                         <button type="submit"

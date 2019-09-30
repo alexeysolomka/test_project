@@ -9,8 +9,9 @@ class BranchRepository implements ICoreRepository
 {
     public function getAll()
     {
-        $columns = ['id', 'name'];
-        $branches = Branch::select($columns)
+        $columns = ['id', 'metro_id', 'name'];
+        $branches = Branch::with('metro')
+            ->select($columns)
             ->orderBy('id', 'ASC')
             ->paginate(10);
 
