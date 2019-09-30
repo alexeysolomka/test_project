@@ -24,17 +24,13 @@
                             </div>
                         @endif
                     </div>
-                    {{ Form::model($branch, ['action' => ['BranchController@update', $branch->id]]) }}
+                    {{ Form::model($metro, ['action' => ['MetroController@update', $metro->id]]) }}
                     <div class="form-group">
-                        {{ Form::label('name', 'Name') }}
-                        {{ Form::text('name', $branch->name, ['class' => 'form-control'])}}
+                        {{ Form::label('location', 'Location') }}
+                        {{ Form::text('location', $metro->location, ['class' => 'form-control'])}}
                     </div>
-                    <div class="form-group">
-                        {{ Form::label('metro_id', 'Metro') }}
-                        {{ Form::select('metro_id', $metros->pluck('location', 'id'), $branch->metro_id,
-                         ['class' => 'form-control'])}}
-                    </div>
-                    {{ Form::button('Update station', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
+                    
+                    {{ Form::button('Update metro', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
                     {{ Form::close() }}
                 </div>
             </div>

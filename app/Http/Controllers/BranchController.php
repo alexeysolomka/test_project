@@ -6,6 +6,7 @@ use App\Branch;
 use App\Http\Requests\CreateBranchRequest;
 use App\Http\Requests\UpdateBranchRequest;
 use App\Repositories\BranchRepository;
+use App\Repositories\MetroRepository;
 
 class BranchController extends Controller
 {
@@ -13,11 +14,16 @@ class BranchController extends Controller
      * @var BranchRepository $branchRepository
      */
     private $branchRepository;
+    /**
+     * @var MetroRepository $metroRepository
+     */
+    private $metroRepository;
 
     public function __construct()
     {
         $this->middleware('auth');
         $this->branchRepository = app(BranchRepository::class);
+        $this->metroRepository = app(MetroRepository::class);
     }
 
     public function index()
@@ -30,7 +36,8 @@ class BranchController extends Controller
     public function create()
     {
         $branch = new Branch;
-        return view('underground.branch.create', compact('branch'));
+        $metros = $this->metroRepository->getAll();
+        return view('underground.branch.create', compact('branch', 'metros'));
     }
 
     public function store(CreateBranchRequest $request)
@@ -49,8 +56,9 @@ class BranchController extends Controller
     public function edit($id)
     {
         $branch = Branch::find($id);
+        $metros = $this->metroRepository->getAll();
 
-        return view('underground.branch.edit', compact('branch'));
+        return view('underground.branch.edit', compact('branch', 'metros'));
     }
 
     public function update(UpdateBranchRequest $request, $id)

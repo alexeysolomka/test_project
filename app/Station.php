@@ -12,7 +12,7 @@ class Station extends Model
     ];
     public static $updateRules = [
         'branch_id' => 'required|exists:branches,id',
-        'name' => 'required|unique:stations,id,'
+        'name' => 'required|unique:stations,name,'
     ];
     protected $fillable = ['branch_id', 'name', 'next'];
 

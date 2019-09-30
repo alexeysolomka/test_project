@@ -77,6 +77,31 @@ class PermissionTableSeeder extends Seeder
                     'controller' => 'App\Http\Controllers\Api\UserController',
                     'method' => 'updateProfile'
                 ],
+                //CRUD Metros
+                [
+                    'controller' => 'App\Http\Controllers\MetroController',
+                    'method' => 'index',
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\MetroController',
+                    'method' => 'create',
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\MetroController',
+                    'method' => 'store',
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\MetroController',
+                    'method' => 'edit',
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\MetroController',
+                    'method' => 'update',
+                ],
+                [
+                    'controller' => 'App\Http\Controllers\MetroController',
+                    'method' => 'delete',
+                ],
                 // CRUD Stations
                 [
                     'controller' => 'App\Http\Controllers\StationController',

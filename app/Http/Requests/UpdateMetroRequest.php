@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Branch;
+use App\Metro;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateBranchRequest extends FormRequest
+class UpdateMetroRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class UpdateBranchRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = Branch::$updateRules;
-        $rules['name'] .= $this->branch_id;
+        $rules = Metro::$updateRules;
+        $rules['location'] .= $this->metro_id;
         return $rules;
     }
 }

@@ -79,6 +79,9 @@
                             </a>
 
                             @if(auth()->user()->checkRole('admin'))
+                            <a class="dropdown-item" href="{{ route('metros.index') }}">
+                                Metros
+                                </a>
                             <a class="dropdown-item" href="{{ route('stations.index') }}">
                             Stations
                             </a>

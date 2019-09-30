@@ -44,6 +44,18 @@ $undegroundConfig = [
     'middleware' => ['2fa', 'havePermission']
 ];
 Route::group($undegroundConfig, function () {
+    $metroConfig = [
+        'prefix' => 'metros'
+    ];
+    Route::group($metroConfig, function () {
+        Route::get('/', 'MetroController@index')->name('metros.index');
+        Route::get('/create', 'MetroController@create')->name('metros.create');
+        Route::post('/store', 'MetroController@store')->name('metros.store');
+        Route::get('/edit/{metro_id}', 'MetroController@edit')->name('metros.edit');
+        Route::post('/update/{metro_id}', 'MetroController@update')->name('metros.update');
+        Route::post('/delete/{metro_id}', 'MetroController@delete')->name('metros.delete');
+    });
+
     $staionConfig = [
         'prefix' => 'stations'
     ];

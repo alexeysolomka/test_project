@@ -11,7 +11,7 @@ class Intersection extends Model
         'name' => 'required|unique:intersections'
     ];
     public static $updateRules = [
-        'name' => 'required|unique:intersections,id,'
+        'name' => 'required|unique:intersections,name,'
     ];
 
     protected $fillable = ['name'];
