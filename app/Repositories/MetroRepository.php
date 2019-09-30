@@ -9,7 +9,7 @@ class MetroRepository implements ICoreRepository
 {
     public function getAll()
     {
-        $columns = ['id', 'location'];
+        $columns = ['id', 'location', 'type_id'];
         $metros = Metro::select($columns)
             ->orderBy('id', 'ASC')
             ->paginate(10);
@@ -21,6 +21,7 @@ class MetroRepository implements ICoreRepository
     {
         $metro = Metro::create([
             'location' => $data['location'],
+            'type_id' => $data['type_id']
         ]);
 
         return $metro;

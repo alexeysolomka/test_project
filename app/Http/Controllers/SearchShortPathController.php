@@ -107,14 +107,18 @@ class SearchShortPathController extends Controller
                 $station = Station::find($visitedStationIds[$i]);
                 $station_name = '';
                 $destination_name = "<span style=background:cyan;>$destinationStation->name</span>";
-                switch($station->branch->metro->location)
+                switch($station->branch->metro->type->name)
                 {
-                    case 'Kharkiv' : {
+                    case 'Metro' : {
                         $station_name = "<span style=background:cyan;>$station->name</span>";
                         break;
                     }
-                    case 'KharkivBus' : {
+                    case 'Bus' : {
                         $station_name = "<mark>$station->name</mark>";
+                        break;
+                    }
+                    case 'Train' : {
+                        $station_name = "<span style=background:red'>$station->name</span>";
                         break;
                     }
                     default: {

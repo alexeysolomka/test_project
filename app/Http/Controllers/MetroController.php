@@ -6,6 +6,7 @@ use App\Http\Requests\CreateMetroRequest;
 use App\Http\Requests\UpdateMetroRequest;
 use App\Metro;
 use App\Repositories\MetroRepository;
+use App\Type;
 
 class MetroController extends Controller
 {
@@ -30,7 +31,9 @@ class MetroController extends Controller
     public function create()
     {
         $metro = new Metro;
-        return view('underground.metro.create', compact('metro'));
+        $types = Type::all();
+        
+        return view('underground.metro.create', compact('metro', 'types'));
     }
 
     public function store(CreateMetroRequest $request)
@@ -49,8 +52,9 @@ class MetroController extends Controller
     public function edit($id)
     {
         $metro = Metro::find($id);
+        $types = Type::all();
 
-        return view('underground.metro.edit', compact('metro'));
+        return view('underground.metro.edit', compact('metro', 'types'));
     }
 
     public function update(UpdateMetroRequest $request, $id)

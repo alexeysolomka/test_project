@@ -13,10 +13,15 @@ class Metro extends Model
      *
      * @var array
      */
-    protected $fillable = ['location'];
+    protected $fillable = ['location', 'type_id'];
 
     public function branches()
     {
         return $this->hasMany(Branch::class);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
     }
 }

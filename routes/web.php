@@ -16,6 +16,10 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::match(['post', 'get'], 'register', function () {
+    Auth::logout();
+    return redirect('/');
+})->name('register');
 Route::get('/2fa', 'TwoFactorController@showForm');
 Route::post('/2fa', 'TwoFactorController@verifyTwoFactor')->middleware('auth');
 
@@ -78,9 +82,9 @@ Route::group($undegroundConfig, function () {
         Route::get('/edit/{station_id}', 'BranchController@edit')->name('branches.edit');
         Route::post('/update/{station_id}', 'BranchController@update')->name('branches.update');
         Route::post('/delete/{station_id}', 'BranchController@delete')->name('branches.delete');
-     });
+    });
 
-     $intersectionConfig = [
+    $intersectionConfig = [
         'prefix' => 'intersections'
     ];
     Route::group($intersectionConfig, function () {
@@ -103,4 +107,3 @@ Route::group($searchPathConfig, function () {
     Route::post('/search-stations', 'SearchShortPathController@searchStations')->name('underground.searchStations');
     Route::post('/search', 'SearchShortPathController@search')->name('underground.search');
 });
-

@@ -29,6 +29,11 @@
                         {{ Form::label('location', 'Location') }}
                         {{ Form::text('location', '', ['class' => 'form-control'])}}
                     </div>
+                    <div class="form-group">
+                            {{ Form::label('type_id', 'Type') }}
+                            {{ Form::select('type_id', $types->pluck('name', 'id'), '',
+                             ['class' => 'form-control'])}}
+                        </div>
                     {{ Form::button('Store metro', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
                     {{ Form::close() }}
                 </div>

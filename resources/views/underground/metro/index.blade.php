@@ -27,6 +27,7 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Name</th>
+                            <th scope="col">Type</th>
                             <th scope="col">Delete</th>
                             <th scope="col">Edit</th>
                         </tr>
@@ -36,6 +37,7 @@
                         <tr>
                             <th>{{ $metro->id }}</th>
                                 <td>{{ $metro->location }}</td>
+                                <td>{{ $metro->type->name }}</td>
                                 <td>
                                     {{ Form::open(['action' => ['MetroController@delete', $metro->id], 'method' => 'POST'])}}
                                         <button type="submit"
