@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Branch extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'metro_id'];
 
     public function stations()
     {
@@ -25,5 +25,10 @@ class Branch extends Model
         return [
             'name' => 'required|unique:branches,id,' . $branch_id
         ];
+    }
+
+    public function metro()
+    {
+        return $this->belongsTo(Metro::class);
     }
 }
