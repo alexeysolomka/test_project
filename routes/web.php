@@ -81,7 +81,14 @@ Route::group($undegroundConfig, function () {
         Route::post('/update/{intersection_id}', 'IntersectionController@update')->name('intersections.update');
         Route::post('/delete/{intersection_id}', 'IntersectionController@delete')->name('intersections.delete');
     });
+});
 
-    Route::get('/search_path_form', 'SearchShortPathController@index')->name('underground.searchIndex');
+$searchPathConfig = [
+    'prefix' => 'search-path/'
+];
+Route::group($searchPathConfig, function () {
+    Route::get('/index', 'SearchShortPathController@index')->name('underground.searchIndex');
+    Route::post('/search-stations', 'SearchShortPathController@searchStations')->name('underground.searchStations');
     Route::post('/search', 'SearchShortPathController@search')->name('underground.search');
 });
+

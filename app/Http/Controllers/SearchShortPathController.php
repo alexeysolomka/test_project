@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Branch;
+use App\Metro;
 use App\Station;
 use Illuminate\Http\Request;
 
@@ -9,7 +11,16 @@ class SearchShortPathController extends Controller
 {
     public function index()
     {
-        $stations = Station::all();
+        $metros = Metro::all();
+
+        return view('underground.select_city', compact('metros'));
+    }
+
+    public function searchStations(Request $request)
+    {
+        $location = $request->get('location');
+        $branches_ids = Branch::where('metro_id', $location)->pluck('id');
+        $stations = Station::whereIn('branch_id', $branches_ids)->get();
 
         return view('underground.search_path', compact('stations'));
     }
