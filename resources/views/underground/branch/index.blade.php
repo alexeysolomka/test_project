@@ -40,8 +40,8 @@
                                 <td>{{ $branch->metro->location }}</td>
                                 <td>
                                     {{ Form::open(['action' => ['BranchController@delete', $branch->id], 'method' => 'POST'])}}
-                                        <button type="submit"
-                                        onclick="confirm('Are you sure want to delete this user?');"
+                                        <button
+                                        onclick="return confirm('Are you sure want to delete this branch?');"
                                         class="btn btn-danger">
                                         Delete
                                     </button>

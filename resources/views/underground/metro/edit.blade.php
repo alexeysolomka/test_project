@@ -27,7 +27,7 @@
                     {{ Form::model($metro, ['action' => ['MetroController@update', $metro->id]]) }}
                     <div class="form-group">
                         {{ Form::label('location', 'Location') }}
-                        {{ Form::text('location', $metro->location, ['class' => 'form-control'])}}
+                        {{ Form::text('location', $metro->location, ['maxlength' => 30, 'class' => 'form-control'])}}
                     </div>
                     <div class="form-group">
                             {{ Form::label('type_id', 'Type') }}

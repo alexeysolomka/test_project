@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Branch extends Model
 {
     public static $createRules = [
-        'name' => 'required|unique:branches',
+        'name' => 'required|max:30|unique:branches',
         'metro_id' => 'required|exists:metros,id'
     ];
     public static $updateRules = [
         'metro_id' => 'required|exists:metros,id',
-        'name' => 'required|unique:branches,name,'
+        'name' => 'required|max:30|unique:branches,name,'
     ];
 
     protected $fillable = ['name', 'metro_id'];

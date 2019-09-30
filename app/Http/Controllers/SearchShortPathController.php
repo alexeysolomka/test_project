@@ -12,8 +12,9 @@ class SearchShortPathController extends Controller
     public function index()
     {
         $metros = Metro::all();
+        $stations = Station::all();
 
-        return view('underground.select_city', compact('metros'));
+        return view('underground.search_path', compact('stations'));
     }
 
     public function searchStations(Request $request)
@@ -118,7 +119,7 @@ class SearchShortPathController extends Controller
                         break;
                     }
                     case 'Train' : {
-                        $station_name = "<span style=background:red'>$station->name</span>";
+                        $station_name = "<span style=background:red;'>$station->name</span>";
                         break;
                     }
                     default: {

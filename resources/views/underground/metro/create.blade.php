@@ -27,7 +27,7 @@
                     {{ Form::model($metro, ['action' => 'MetroController@store']) }}
                     <div class="form-group">
                         {{ Form::label('location', 'Location') }}
-                        {{ Form::text('location', '', ['class' => 'form-control'])}}
+                        {{ Form::text('location', '', ['maxlength' => 30, 'class' => 'form-control'])}}
                     </div>
                     <div class="form-group">
                             {{ Form::label('type_id', 'Type') }}

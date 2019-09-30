@@ -27,7 +27,7 @@
                     {{ Form::model($branch, ['action' => 'BranchController@store']) }}
                     <div class="form-group">
                         {{ Form::label('name', 'Name') }}
-                        {{ Form::text('name', '', ['class' => 'form-control'])}}
+                        {{ Form::text('name', '', ['maxlength' => 30, 'class' => 'form-control'])}}
                     </div>
                     <div class="form-group">
                         {{ Form::label('metro_id', 'Metro') }}

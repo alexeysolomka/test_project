@@ -41,7 +41,7 @@
                                 <td>
                                     {{ Form::open(['action' => ['MetroController@delete', $metro->id], 'method' => 'POST'])}}
                                         <button type="submit"
-                                        onclick="confirm('Are you sure want to delete this metro?');"
+                                        onclick="return confirm('Are you sure want to delete this metro?');"
                                         class="btn btn-danger">
                                         Delete
                                     </button>

@@ -32,7 +32,7 @@
                     </div>
                     <div class="form-group">
                         {{ Form::label('name', 'Name') }}
-                        {{ Form::text('name', $station->name, ['class' => 'form-control'])}}
+                        {{ Form::text('name', $station->name, ['maxlength' => 30, 'class' => 'form-control'])}}
                     </div>
                     <div class="form-group">
                             {{ Form::label('next', 'Next') }}

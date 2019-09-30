@@ -8,11 +8,11 @@ class Station extends Model
 {
     public static $createRules = [
         'branch_id' => 'required|exists:branches,id',
-        'name' => 'required|unique:stations'
+        'name' => 'required|max:30|unique:stations'
     ];
     public static $updateRules = [
         'branch_id' => 'required|exists:branches,id',
-        'name' => 'required|unique:stations,name,'
+        'name' => 'required|max:30|unique:stations,name,'
     ];
     protected $fillable = ['branch_id', 'name', 'next'];
 

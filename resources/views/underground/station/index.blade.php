@@ -48,7 +48,7 @@
                                 <td>
                                     {{ Form::open(['action' => ['StationController@delete', $station->id], 'method' => 'POST'])}}
                                         <button type="submit"
-                                        onclick="confirm('Are you sure want to delete this user?');"
+                                        onclick="return confirm('Are you sure want to delete this station?');"
                                         class="btn btn-danger">
                                         Delete
                                     </button>

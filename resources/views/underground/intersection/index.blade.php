@@ -39,7 +39,7 @@
                                 <td>
                                     {{ Form::open(['action' => ['IntersectionController@delete', $intersection->id], 'method' => 'POST'])}}
                                         <button type="submit"
-                                        onclick="confirm('Are you sure want to delete this user?');"
+                                        onclick="return confirm('Are you sure want to delete this intersection?');"
                                         class="btn btn-danger">
                                         Delete
                                     </button>

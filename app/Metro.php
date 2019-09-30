@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Metro extends Model
 {
-    public static $createRules = ['location' => 'required|string|unique:metros'];
-    public static $updateRules = ['location' => 'required|string|unique:metros,location,'];
+    public static $createRules = ['location' => 'required|string|max:30|unique:metros'];
+    public static $updateRules = ['location' => 'required|string|max:30|unique:metros,location,'];
     /**
      * The attributes that are mass assignable.
      *

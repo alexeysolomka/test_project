@@ -27,7 +27,7 @@
                     {{ Form::model($intersection, ['action' => ['IntersectionController@update', $intersection->id]]) }}
                     <div class="form-group">
                         {{ Form::label('name', 'Name') }}
-                        {{ Form::text('name', $intersection->name, ['class' => 'form-control'])}}
+                        {{ Form::text('name', $intersection->name, ['maxlength' => 30, 'class' => 'form-control'])}}
                     </div>
                     {{ Form::button('Update intersection', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
                     {{ Form::close() }}

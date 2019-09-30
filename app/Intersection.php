@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\DB;
 class Intersection extends Model
 {
     public static $createRules = [
-        'name' => 'required|unique:intersections'
+        'name' => 'required|max:30|unique:intersections'
     ];
     public static $updateRules = [
-        'name' => 'required|unique:intersections,name,'
+        'name' => 'required|max:30|unique:intersections,name,'
     ];
 
     protected $fillable = ['name'];

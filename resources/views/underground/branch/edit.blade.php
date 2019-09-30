@@ -28,7 +28,7 @@
                     <div class="form-group">
                         {{ Form::hidden('branch_id', $branch->id)}}
                         {{ Form::label('name', 'Name') }}
-                        {{ Form::text('name', $branch->name, ['class' => 'form-control'])}}
+                        {{ Form::text('name', $branch->name, ['maxlength' => 30, 'class' => 'form-control'])}}
                     </div>
                     <div class="form-group">
                         {{ Form::label('metro_id', 'Metro') }}
