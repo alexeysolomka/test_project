@@ -11,8 +11,8 @@ class Branch extends Model
         'metro_id' => 'required|exists:metros,id'
     ];
     public static $updateRules = [
-        'name' => 'required|unique:branches,name,',
-        'metro_id' => 'required|exists:metros,id'
+        'metro_id' => 'required|exists:metros,id',
+        'name' => 'required|unique:branches,name,'
     ];
 
     protected $fillable = ['name', 'metro_id'];

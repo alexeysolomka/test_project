@@ -26,6 +26,7 @@
                     </div>
                     {{ Form::model($branch, ['action' => ['BranchController@update', $branch->id]]) }}
                     <div class="form-group">
+                        {{ Form::hidden('branch_id', $branch->id)}}
                         {{ Form::label('name', 'Name') }}
                         {{ Form::text('name', $branch->name, ['class' => 'form-control'])}}
                     </div>

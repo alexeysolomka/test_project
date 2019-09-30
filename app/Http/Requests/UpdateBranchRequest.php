@@ -26,6 +26,7 @@ class UpdateBranchRequest extends FormRequest
     {
         $rules = Branch::$updateRules;
         $rules['name'] .= $this->branch_id;
+        
         return $rules;
     }
 }
