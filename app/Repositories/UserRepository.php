@@ -29,6 +29,7 @@ class UserRepository implements ICoreRepository
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'phone_number' => $data['phone_number'],
             'is_active' => $data['is_active'],
             'role_id' => $data['role_id'],
             'avatar' => $avatar,
