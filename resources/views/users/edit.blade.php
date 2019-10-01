@@ -22,6 +22,7 @@
                     <form method="POST" action="{{ route('users.update', ['userId' => $user->id]) }}"
                           enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="user_id" value={{ $user->id}}>
                         <div class="form-group row">
                             <label for="profile_image" class="col-md-4 col-form-label text-md-right">Profile
                                 Image</label>
@@ -99,6 +100,20 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="form-group row">
+                                <label for="phone_number"
+                                       class="col-md-4 col-form-label text-md-right">Phone number</label>
+                                <div class="col-md-6">
+                                    <input id="phone_number" type="text" min="13" max="13" maxlength="13"
+                                           class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" name="phone_number"
+                                           value="{{ old('phone_number', $user->phone_number) }}" required>
+                                    @if ($errors->has('phone_number'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('phone_number') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
                         <div class="form-group row">
                             <label for="created" class="col-md-4 col-form-label text-md-right">Created at</label>
                             <div class="col-md-6">

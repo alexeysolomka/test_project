@@ -14,16 +14,16 @@ class User extends Authenticatable
         'name' => 'required|min:3|string|max:255',
         'email' => 'required|string|email|max:255|unique:users',
         'is_active' => 'required|boolean',
-        'avatar' => 'mimes:jpeg,jpg,png,gif',
-        'phone_number' => 'required|unique:users',
+        'avatar' => 'sometimes|mimes:jpeg,jpg,png,gif',
+        'phone_number' => 'required|regex:/(380)[0-9]{9}$/|unique:users',
         'role_id' => 'required|exists:roles,id',
         'password' => 'min:8|confirmed|regex:/^(?=.*[0-9])(?=.*[a-zA-Z])\w{8,}$/',
     ];
     public static $updateRules = [
         'name' => 'required|min:3|string|max:255',
         'role_id' => 'sometimes|integer|exists:roles,id',
-        'avatar' => 'mimes:jpeg,jpg,png,gif',
-        'phone_number' => 'required|unique:users,id,',
+        'avatar' => 'sometimes|mimes:jpeg,jpg,png,gif',
+        'phone_number' => 'required|regex:/(380)[0-9]{9}$/|unique:users,phone_number,',
         'email' => 'required|string|email|max:255|unique:users,email,',
     ];
     public static $twoFactorVerifyRule = [

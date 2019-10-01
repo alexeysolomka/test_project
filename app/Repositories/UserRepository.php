@@ -21,12 +21,17 @@ class UserRepository implements ICoreRepository
 
     public function create($data)
     {
+        $avatar = null;
+        if(array_key_exists('avatar', $data))
+        {
+            $avatar = $data['avatar'];
+        }
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'is_active' => $data['is_active'],
             'role_id' => $data['role_id'],
-            'avatar' => $data['avatar'],
+            'avatar' => $avatar,
             'password' => bcrypt($data['password'])
         ]);
 

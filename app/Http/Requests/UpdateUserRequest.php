@@ -25,7 +25,7 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         $rules = User::$updateRules;
-        $rules['phone'] .= $this->user_id;
+        $rules['phone_number'] .= $this->user_id;
         $rules['email'] .= $this->user_id;
 
         return $rules;

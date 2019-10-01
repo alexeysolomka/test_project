@@ -81,6 +81,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                                <label for="phone_number" class="col-md-4 col-form-label text-md-right">Phone number</label>
+                                <div class="col-md-6">
+                                    <input id="phone_number" type="text" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" name="phone_number" value="{{ old('phone_number') }}" required>
+                                    @if ($errors->has('phone_number'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('phone_number') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
