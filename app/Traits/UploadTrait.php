@@ -21,7 +21,20 @@ trait UploadTrait
         list($width, $height) = getimagesize($file);
 
         $newwidth = 100;
-        $newheight = 50;
+        $newheight = 100;
+
+        $ratioDefault = $width / $height;
+        $ratioNew = $newwidth / $newheight;
+
+        if($ratioDefault > $ratioNew && $width > $newwidth)
+        {
+            $newheight = $newheight / $width * $height;
+        }
+        else if($height > $newheight)
+        {
+            $newwidth = $newwidth / $height * $width;
+        }
+
 
         switch ($file->getClientOriginalExtension()) {
             case "png":

@@ -52,7 +52,7 @@ class UserService
 
     public function uploadAvatar($userEmail, $image)
     {
-        $imgData = $this->resizeImage($image, 300, 50);
+        $imgData = $this->resizeImage($image);
         $name = str_slug($userEmail) . '_' . time();
         $folder = '/images/';
         $path = public_path() . '/images';
