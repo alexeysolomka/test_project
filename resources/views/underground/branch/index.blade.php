@@ -57,7 +57,9 @@
                                     </tbody>
                                 </table>
                     </div>
-                    {{ $branches->links() }}
+                    <div class="row justify-content-center">
+                            {{ $branches->links() }}
+                    </div>
                 </div>
             </div>
         </div>

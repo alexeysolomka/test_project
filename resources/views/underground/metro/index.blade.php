@@ -57,7 +57,9 @@
                                     </tbody>
                                 </table>
                     </div>
-                    {{ $metros->links() }}
+                    <div class="row justify-content-center">
+                            {{ $metros->links() }}
+                    </div>
                 </div>
             </div>
         </div>

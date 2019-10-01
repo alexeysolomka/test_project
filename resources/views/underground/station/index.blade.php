@@ -64,7 +64,9 @@
                                     </tbody>
                                 </table>
                     </div>
-                    {{ $stations->links() }}
+                    <div class="row justify-content-center">
+                            {{ $stations->links() }}
+                    </div>
                 </div>
             </div>
         </div>

@@ -55,7 +55,9 @@
                                     </tbody>
                                 </table>
                     </div>
-                    {{ $intersections->links() }}
+                    <div class="row justify-content-center">
+                            {{ $intersections->links() }}
+                    </div>
                 </div>
             </div>
         </div>
