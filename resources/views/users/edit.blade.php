@@ -32,7 +32,7 @@
                                     <img src="{{ asset($user->avatar) }}">
                                     <br>
                                     <a href="{{ route('users.avatar-delete', ['userId' => $user->id]) }}"
-                                       class="btn btn-danger">Del avatar</a>
+                                       class="btn btn-danger">Delete avatar</a>
                                 @endif
                                 @if ($errors->has('avatar'))
                                     <span class="invalid-feedback" role="alert">
