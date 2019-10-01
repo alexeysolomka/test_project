@@ -11,8 +11,8 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable;
 
     public static $createRules = [
-        'name' => 'required|min:3|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
+        'name' => 'required|min:3|string|max:30',
+        'email' => 'required|string|email|max:40|unique:users',
         'is_active' => 'required|boolean',
         'avatar' => 'sometimes|mimes:jpeg,jpg,png,gif',
         'phone_number' => 'required|regex:/(380)[0-9]{9}$/|unique:users',
@@ -20,11 +20,11 @@ class User extends Authenticatable
         'password' => 'min:8|confirmed|regex:/^(?=.*[0-9])(?=.*[a-zA-Z])\w{8,}$/',
     ];
     public static $updateRules = [
-        'name' => 'required|min:3|string|max:255',
+        'name' => 'required|min:3|string|max:30',
         'role_id' => 'sometimes|integer|exists:roles,id',
         'avatar' => 'sometimes|mimes:jpeg,jpg,png,gif',
         'phone_number' => 'required|regex:/(380)[0-9]{9}$/|unique:users,phone_number,',
-        'email' => 'required|string|email|max:255|unique:users,email,',
+        'email' => 'required|string|email|max:40|unique:users,email,',
     ];
     public static $twoFactorVerifyRule = [
         '2fa' => 'required'

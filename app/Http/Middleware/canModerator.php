@@ -17,8 +17,8 @@ class canModerator
     public function handle($request, Closure $next)
     {
         $user = User::find($request->userId);
-
-        if($user->role->name == 'admin')
+        
+        if($user->role->name == 'admin' && !auth()->user()->checkRole('admin'))
         {
             return response()->json('Forbidden', 403);
         }

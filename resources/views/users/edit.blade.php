@@ -76,7 +76,7 @@
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
                             <div class="col-md-6">
-                                <input id="name" type="text"
+                                <input id="name" type="text" maxlength="30"
                                        class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name"
                                        value="{{ old('name', $user->name) }}" required autofocus>
                                 @if ($errors->has('name'))
@@ -90,7 +90,7 @@
                             <label for="email"
                                    class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
                             <div class="col-md-6">
-                                <input id="email" type="email"
+                                <input id="email" type="email" maxlength="40"
                                        class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
                                        value="{{ old('email', $user->email) }}" required>
                                 @if ($errors->has('email'))
@@ -101,7 +101,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                                <label for="phone_number"
+                                <label for="phone_number" maxlength="13"
                                        class="col-md-4 col-form-label text-md-right">Phone number</label>
                                 <div class="col-md-6">
                                     <input id="phone_number" type="text" min="13" max="13" maxlength="13"
