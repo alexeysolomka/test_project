@@ -48,6 +48,10 @@ class SearchShortPathController extends Controller
                 echo $route . '->';
             }
         }
+        else
+        {
+            return "Route is not found.";
+        }
     }
 
     private function calculateRoutes($previousStationId, $currentStationId, $destinationStationId, & $visitedStationsIds, & $routes)

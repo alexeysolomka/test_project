@@ -24,23 +24,28 @@
                             </div>
                         @endif
                     </div>
-                    {{ Form::model($station, ['action' => ['StationController@update', $station->id]]) }}
-                    <div class="form-group">
-                        {{ Form::label('branch_id', 'Branch') }}
-                        {{ Form::select('branch_id', $branches->pluck('name', 'id'), $station->branch_id,
-                         ['class' => 'form-control'])}}
+                    <div class="ml-5 mr-5">
+                            {{ Form::model($station, ['action' => ['StationController@update', $station->id]]) }}
+                            <div class="form-group">
+                                {{ Form::label('branch_id', 'Branch') }}
+                                {{ Form::select('branch_id', $branches->pluck('name', 'id'), $station->branch_id,
+                                 ['class' => 'form-control'])}}
+                            </div>
+                            <div class="form-group">
+                                {{ Form::label('name', 'Name') }}
+                                {{ Form::text('name', $station->name, ['maxlength' => 30, 'class' => 'form-control'])}}
+                            </div>
+                            <div class="form-group">
+                                    {{ Form::label('next', 'Next') }}
+                                    {{ Form::select('next', $stations, $station->next,
+                                      ['class' => 'form-control'])}}
+                            </div>
+                            {{ Form::close() }}
+                        <div class="form-group">
+                                {{ Form::button('Update station', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
+                        </div>
                     </div>
-                    <div class="form-group">
-                        {{ Form::label('name', 'Name') }}
-                        {{ Form::text('name', $station->name, ['maxlength' => 30, 'class' => 'form-control'])}}
-                    </div>
-                    <div class="form-group">
-                            {{ Form::label('next', 'Next') }}
-                            {{ Form::select('next', $stations, $station->next,
-                              ['class' => 'form-control'])}}
-                    </div>
-                    {{ Form::button('Update station', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
-                    {{ Form::close() }}
+                    
                 </div>
             </div>
         </div>

@@ -20,8 +20,7 @@ class StationRepository implements ICoreRepository
     {
         $columns = ['id', 'name'];
         $stations = Station::select($columns)
-        ->pluck('name', 'id');
-        $stations[""] = 'The ultimate';
+        ->get();
 
         return $stations;
     }

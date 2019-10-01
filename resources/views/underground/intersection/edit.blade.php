@@ -24,34 +24,38 @@
                             </div>
                         @endif
                     </div>
-                    {{ Form::model($intersection, ['action' => ['IntersectionController@update', $intersection->id]]) }}
-                    <div class="form-group">
-                        {{ Form::label('name', 'Name') }}
-                        {{ Form::text('name', $intersection->name, ['maxlength' => 30, 'class' => 'form-control'])}}
-                    </div>
-                    {{ Form::button('Update intersection', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
-                    {{ Form::close() }}
-                    <hr>
-                    {{ Form::model($intersection, ['action' => ['IntersectionController@addStationToIntersection', $intersection->id]])}}
-                    <div class="form-group">
-                        {{ Form::label('station', 'Station')}}
-                        {{ Form::select('station_id', $availableStations->pluck('name', 'id'), '', ['class' => 'form-control'])}}
-                    </div>
-                    <div class="form-group">
-                            {{ Form::button('Add station to intersection', ['type' => 'submit', 'class' => 'btn btn-default btn-sm'] )  }}
-                        </div>
-                    {{ Form::close() }}
-                    @if($intersection->stations->isNotEmpty())
-                    Stations for this intersection
-                    <ul class="list-group">
-                    @foreach($intersection->stations as $station)
-                          <li class="list-group-item">{{ $station->name }}, {{ $station->branch->name }} line. 
-                                {{ Form::open(['action' => ['IntersectionController@deleteStationFromIntersection', $intersection->id, $station->id], 'method' => 'POST'])}}
-                                {{ Form::button('remove station', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm'])}}
+                    <div class="ml-5 mr-5">
+                            {{ Form::model($intersection, ['action' => ['IntersectionController@update', $intersection->id]]) }}
+                            <div class="form-group">
+                                {{ Form::label('name', 'Name') }}
+                                {{ Form::text('name', $intersection->name, ['maxlength' => 30, 'class' => 'form-control'])}}
+                            </div>
+                            {{ Form::button('Update intersection', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
                             {{ Form::close() }}
-                        </li>
-                    @endforeach
-                </ul>
+                            <hr>
+                            {{ Form::model($intersection, ['action' => ['IntersectionController@addStationToIntersection', $intersection->id]])}}
+                            <div class="form-group">
+                                {{ Form::label('station', 'Station')}}
+                                {{ Form::select('station_id', $availableStations->pluck('name', 'id'), '', ['class' => 'form-control'])}}
+                            </div>
+                            <div class="form-group">
+                                    {{ Form::button('Add station to intersection', ['type' => 'submit', 'class' => 'btn btn-default btn-sm'] )  }}
+                                </div>
+                            {{ Form::close() }}
+                    </div>
+                    @if($intersection->stations->isNotEmpty())
+                    <div class="ml-5 mr-5">
+                            <h3 >Stations for this intersection</h3>
+                            <ul class="list-group">
+                            @foreach($intersection->stations as $station)
+                                  <li class="list-group-item">{{ $station->name }}, {{ $station->branch->name }} line. 
+                                        {{ Form::open(['action' => ['IntersectionController@deleteStationFromIntersection', $intersection->id, $station->id], 'method' => 'POST'])}}
+                                        {{ Form::button('remove station', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm'])}}
+                                    {{ Form::close() }}
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
                 </div>
             </div>

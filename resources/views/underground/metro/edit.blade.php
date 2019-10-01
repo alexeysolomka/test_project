@@ -24,18 +24,22 @@
                             </div>
                         @endif
                     </div>
-                    {{ Form::model($metro, ['action' => ['MetroController@update', $metro->id]]) }}
-                    <div class="form-group">
-                        {{ Form::label('location', 'Location') }}
-                        {{ Form::text('location', $metro->location, ['maxlength' => 30, 'class' => 'form-control'])}}
-                    </div>
-                    <div class="form-group">
-                            {{ Form::label('type_id', 'Type') }}
-                            {{ Form::select('type_id', $types->pluck('name', 'id'), $metro->type_id,
-                             ['class' => 'form-control'])}}
+                    <div class="ml-5 mr-5">
+                            {{ Form::model($metro, ['action' => ['MetroController@update', $metro->id]]) }}
+                            <div class="form-group">
+                                {{ Form::label('location', 'Location') }}
+                                {{ Form::text('location', $metro->location, ['maxlength' => 30, 'class' => 'form-control'])}}
+                            </div>
+                            <div class="form-group">
+                                    {{ Form::label('type_id', 'Type') }}
+                                    {{ Form::select('type_id', $types->pluck('name', 'id'), $metro->type_id,
+                                     ['class' => 'form-control'])}}
+                                </div>
+                        <div class="form-group">
+                                {{ Form::button('Update metro', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
                         </div>
-                    {{ Form::button('Update metro', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
-                    {{ Form::close() }}
+                        {{ Form::close() }}
+                    </div>
                 </div>
             </div>
         </div>

@@ -37,6 +37,7 @@ class StationController extends Controller
     {
         $station = new Station;
         $stations = $this->stationRepository->getStationsForSelect();
+        $stations[""] = 'The ultimate';
         $branches = $this->branchRepository->getAll();
 
         return view('underground.station.create', compact('station', 'stations', 'branches'));
@@ -58,7 +59,8 @@ class StationController extends Controller
     public function edit($id)
     {
         $station = Station::find($id);
-        $stations = $this->stationRepository->getStationsForSelect();
+        $stations = $this->stationRepository->getStationsForSelect()->where('id', '!=', $id)->pluck('name', 'id');
+        $stations[""] = 'The ultimate';
         $branches = $this->branchRepository->getAll();
 
         return view('underground.station.edit', compact('station', 'branches', 'stations'));

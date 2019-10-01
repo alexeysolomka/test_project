@@ -24,13 +24,17 @@
                             </div>
                         @endif
                     </div>
-                    {{ Form::model($intersection, ['action' => 'IntersectionController@store']) }}
-                    <div class="form-group">
-                        {{ Form::label('name', 'Name') }}
-                        {{ Form::text('name', '', ['maxlength' => 30, 'class' => 'form-control'])}}
+                    <div class="ml-5 mr-5">
+                            {{ Form::model($intersection, ['action' => 'IntersectionController@store']) }}
+                            <div class="form-group">
+                                {{ Form::label('name', 'Name') }}
+                                {{ Form::text('name', '', ['maxlength' => 30, 'class' => 'form-control'])}}
+                            </div>
+                            <div class="form-group">
+                                    {{ Form::button('Store intersection', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
+                            </div>
+                            {{ Form::close() }}
                     </div>
-                    {{ Form::button('Store intersection', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
-                    {{ Form::close() }}
                 </div>
             </div>
         </div>

@@ -24,19 +24,23 @@
                             </div>
                         @endif
                     </div>
-                    {{ Form::model($branch, ['action' => ['BranchController@update', $branch->id]]) }}
-                    <div class="form-group">
-                        {{ Form::hidden('branch_id', $branch->id)}}
-                        {{ Form::label('name', 'Name') }}
-                        {{ Form::text('name', $branch->name, ['maxlength' => 30, 'class' => 'form-control'])}}
+                    <div class="ml-5 mr-5">
+                            {{ Form::model($branch, ['action' => ['BranchController@update', $branch->id]]) }}
+                            <div class="form-group">
+                                {{ Form::hidden('branch_id', $branch->id)}}
+                                {{ Form::label('name', 'Name') }}
+                                {{ Form::text('name', $branch->name, ['maxlength' => 30, 'class' => 'form-control'])}}
+                            </div>
+                            <div class="form-group">
+                                {{ Form::label('metro_id', 'Metro') }}
+                                {{ Form::select('metro_id', $metros->pluck('location', 'id'), $branch->metro_id,
+                                 ['class' => 'form-control'])}}
+                            </div>
+                            <div class="form-group">
+                                    {{ Form::button('Update station', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
+                            </div>
+                            {{ Form::close() }}
                     </div>
-                    <div class="form-group">
-                        {{ Form::label('metro_id', 'Metro') }}
-                        {{ Form::select('metro_id', $metros->pluck('location', 'id'), $branch->metro_id,
-                         ['class' => 'form-control'])}}
-                    </div>
-                    {{ Form::button('Update station', ['type' => 'submit', 'class' => 'btn btn-success'] )  }}
-                    {{ Form::close() }}
                 </div>
             </div>
         </div>
