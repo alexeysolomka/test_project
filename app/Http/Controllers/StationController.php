@@ -36,7 +36,7 @@ class StationController extends Controller
     public function create()
     {
         $station = new Station;
-        $stations = $this->stationRepository->getStationsForSelect();
+        $stations = $this->stationRepository->getStationsForSelect()->pluck('name', 'id');
         $stations[""] = 'The ultimate';
         $branches = $this->branchRepository->getAll();
 
