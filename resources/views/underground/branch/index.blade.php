@@ -22,39 +22,41 @@
                         Branches
                         <a href="{{ route('branches.create') }}">Create new branch</a>
                     </div>
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Branch</th>
-                            <th scope="col">Metro</th>
-                            <th scope="col">Delete</th>
-                            <th scope="col">Edit</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($branches as $branch)
-                        <tr>
-                            <th>{{ $branch->id }}</th>
-                                <td>{{ $branch->name }}</td>
-                                <td>{{ $branch->metro->location }}</td>
-                                <td>
-                                    {{ Form::open(['action' => ['BranchController@delete', $branch->id], 'method' => 'POST'])}}
-                                        <button
-                                        onclick="return confirm('Are you sure want to delete this branch?');"
-                                        class="btn btn-danger">
-                                        Delete
-                                    </button>
-                                    {{ Form::close() }}
-                                </td>
-                                <td>
-                                        <a href="{{ route('branches.edit', ['branch_id' => $branch->id]) }}"
-                                                class="btn btn-info">Edit</a>
-                                </td>
-                        </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                            <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Branch</th>
+                                        <th scope="col">Metro</th>
+                                        <th scope="col">Delete</th>
+                                        <th scope="col">Edit</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($branches as $branch)
+                                    <tr>
+                                        <th>{{ $branch->id }}</th>
+                                            <td>{{ $branch->name }}</td>
+                                            <td>{{ $branch->metro->location }}</td>
+                                            <td>
+                                                {{ Form::open(['action' => ['BranchController@delete', $branch->id], 'method' => 'POST'])}}
+                                                    <button
+                                                    onclick="return confirm('Are you sure want to delete this branch?');"
+                                                    class="btn btn-danger">
+                                                    Delete
+                                                </button>
+                                                {{ Form::close() }}
+                                            </td>
+                                            <td>
+                                                    <a href="{{ route('branches.edit', ['branch_id' => $branch->id]) }}"
+                                                            class="btn btn-info">Edit</a>
+                                            </td>
+                                    </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                    </div>
                     {{ $branches->links() }}
                 </div>
             </div>
