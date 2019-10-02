@@ -1,10 +1,11 @@
 <?php
 
-use App\Branch;
-use App\Intersection;
-use App\Metro;
-use App\Station;
 use App\Type;
+use App\Metro;
+use App\Branch;
+use App\Station;
+use App\Intersection;
+use App\IntersectionToStation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -17,6 +18,7 @@ class StationSeeder extends Seeder
      */
     public function run()
     {
+        IntersectionToStation::truncate();
         DB::table('types')
             ->insert([
                 ['name' => 'Metro'],

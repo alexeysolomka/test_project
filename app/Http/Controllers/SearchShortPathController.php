@@ -36,12 +36,21 @@ class SearchShortPathController extends Controller
         $allIntersections = Intersection::with('stations')->get();
 
         $collectionOfStations = collect($allStations);
+        $collectionOfBranches = collect();
+        foreach($collectionOfStations->unique('branch_id') as $station)
+        {
+            $collectionOfBranches->push([
+                'branch_id' => $station->branch_id,
+                'color' => $this->randomColor()
+            ]);
+        }
+        
         $collectionOfIntersections = collect($allIntersections);
 
         $routes = [];
         $visitedStations = [];
 
-        $this->newCalcucateRoutes(null, $from, $to, $collectionOfStations, $collectionOfIntersections, $visitedStations, $routes);
+        $this->newCalcucateRoutes(null, $from, $to, $collectionOfStations, $collectionOfBranches, $collectionOfIntersections, $visitedStations, $routes);
         // $this->calculateRoutes(null, $stationFrom->id, $stationTo->id, $visitedStations, $routes);
 
         if (count($routes) > 0) {
@@ -54,7 +63,7 @@ class SearchShortPathController extends Controller
         }
     }
 
-    private function newCalcucateRoutes($previousStationId, $currentStationId, $destinationStationId, $allStations, $collectionOfIntersections, &$visitedStations, &$routes)
+    private function newCalcucateRoutes($previousStationId, $currentStationId, $destinationStationId, $allStations, $collectionOfBranches, $collectionOfIntersections, &$visitedStations, &$routes)
     {
         $currentStation = $allStations->first(function ($station) use ($currentStationId) {
             return $station->id == $currentStationId;
@@ -64,7 +73,7 @@ class SearchShortPathController extends Controller
         });
 
         if ($currentStation->id == $destinationStation->id) {
-            $this->newPersistRoute($destinationStation->name, $visitedStations, $routes);
+            $this->newPersistRoute($collectionOfBranches, $destinationStation, $visitedStations, $routes);
         } else {
             $stations = [];
             if (isset($currentStation->next)) {
@@ -93,14 +102,14 @@ class SearchShortPathController extends Controller
                 }
             }
             if (!empty($stations)) {
-                if (!in_array($currentStation->name, $visitedStations)) {
-                    array_push($visitedStations, $currentStation->name);
+                if (!in_array($currentStation, $visitedStations)) {
+                    array_push($visitedStations, $currentStation);
 
                     foreach ($stations as $nextStation) {
                         if ($previousStationId != null && $previousStationId == $nextStation->id) {
                             continue;
                         }
-                        $this->newCalcucateRoutes($currentStation->id, $nextStation->id, $destinationStationId, $allStations, $collectionOfIntersections, $visitedStations, $routes);
+                        $this->newCalcucateRoutes($currentStation->id, $nextStation->id, $destinationStationId, $allStations, $collectionOfBranches, $collectionOfIntersections, $visitedStations, $routes);
                     }
                     array_pop($visitedStations);
                 }
@@ -108,20 +117,39 @@ class SearchShortPathController extends Controller
         }
     }
 
-    private function newPersistRoute($destinationStationName, &$visitedStations, &$routes)
+    private function newPersistRoute($branches, $destinationStationName, &$visitedStations, &$routes)
     {
         if (!$visitedStations) {
             echo "No need to travel. You are already where you wanted to be :)";
         } else {
             $arrayOfStations = array();
             $size = count($visitedStations);
+            $station = '';
             for ($i = 0; $i < $size; $i++) {
-                array_push($arrayOfStations, $visitedStations[$i]);
+                $branch_id = $visitedStations[$i]->branch_id;
+                $branch = $branches->first(function ($branch) use($branch_id) {
+                    return $branch['branch_id'] == $branch_id;
+                });
+                $station = "<span style='background: #{$branch['color']};'>{$visitedStations[$i]->name}</span>";
+                array_push($arrayOfStations, $station);
             }
-            array_push($arrayOfStations, $destinationStationName);
+            $branch = $branches->first(function ($branch) use($destinationStationName) {
+                return $branch['branch_id'] == $destinationStationName->branch_id;
+            });
+            $destinationStation = "<span style='background: #{$branch['color']};'>{$destinationStationName->name}</span>";
+            array_push($arrayOfStations, $destinationStation);
             array_push($routes, $arrayOfStations);
         }
     }
+
+    private function randomColorPart() {
+        return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
+    }
+    
+    private function randomColor() {
+        return $this->randomColorPart() . $this->randomColorPart() . $this->randomColorPart();
+    }
+    
 
     private function calculateRoutes($previousStationId, $currentStationId, $destinationStationId, &$visitedStationsIds, &$routes)
     {
