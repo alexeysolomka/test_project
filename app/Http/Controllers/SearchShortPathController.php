@@ -12,7 +12,7 @@ class SearchShortPathController extends Controller
 {
     public function index()
     {
-        $metros = Metro::all();
+        // $metros = Metro::all();
         $stations = Station::all();
 
         return view('underground.search_path', compact('stations'));
