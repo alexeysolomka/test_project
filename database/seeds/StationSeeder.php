@@ -434,6 +434,7 @@ class StationSeeder extends Seeder
         foreach ($stations as $station) {
             if ($station->id < $station_end_id) {
                 $station->next = $station->id + 1;
+                $station->travel_time = rand(130, 310);
                 $station->save();
             }
         }
@@ -442,6 +443,7 @@ class StationSeeder extends Seeder
         foreach ($stations as $station) {
             if ($station->id >= $station_start && $station->id < $station_end_id) {
                 $station->next = $station->id + 1;
+                $station->travel_time = rand(130, 310);
                 $station->save();
             }
         }
@@ -450,6 +452,7 @@ class StationSeeder extends Seeder
         foreach ($stations as $station) {
             if ($station->id >= $station_start && $station->id < $station_end_id) {
                 $station->next = $station->id + 1;
+                $station->travel_time = rand(130, 310);
                 $station->save();
             }
         }
@@ -458,6 +461,7 @@ class StationSeeder extends Seeder
         foreach ($stations as $station) {
             if ($station->id >= $station_start && $station->id < $station_end_id) {
                 $station->next = $station->id + 1;
+                $station->travel_time = rand(130, 310);
                 $station->save();
             }
         }
@@ -467,6 +471,7 @@ class StationSeeder extends Seeder
         foreach ($stations as $station) {
             if ($station->id < $station_end_id->id) {
                 $station->next = $station->id + 1;
+                $station->travel_time = rand(130, 310);
                 $station->save();
             }
         }
@@ -618,6 +623,7 @@ class StationSeeder extends Seeder
         foreach ($stations as $station) {
             if ($station->id < $station_end_id) {
                 $station->next = $station->id + 1;
+                $station->travel_time = rand(130, 310);
                 $station->save();
             }
         }
@@ -626,6 +632,7 @@ class StationSeeder extends Seeder
         foreach ($stations as $station) {
             if ($station->id >= $station_start && $station->id < $station_end_id) {
                 $station->next = $station->id + 1;
+                $station->travel_time = rand(130, 310);
                 $station->save();
             }
         }
@@ -634,6 +641,7 @@ class StationSeeder extends Seeder
         foreach ($stations as $station) {
             if ($station->id >= $station_start && $station->id < $station_end_id) {
                 $station->next = $station->id + 1;
+                $station->travel_time = rand(130, 310);
                 $station->save();
             }
         }

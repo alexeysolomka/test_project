@@ -49,39 +49,23 @@ class SearchShortPathController extends Controller
         $routes = [];
         $visitedStations = [];
 
-        $this->newCalcucateRoutes(null, $from, $to, $collectionOfStations, $collectionOfBranches, $collectionOfIntersections, $visitedStations, $routes, null);
-        // $this->calculateRoutes(null, $stationFrom->id, $stationTo->id, $visitedStations, $routes);
+        $this->calcucateRoutes(null, $from, $to, $collectionOfStations, $collectionOfIntersections, $visitedStations, $routes);
 
-        dump($routes);
-        $shortestRoutes = array();
-        if (count($routes) > 0) {
-            sort($routes);
-            $minRoute = $routes[0];
-            $shortestRoutes[] = $minRoute;
-            if (count($routes) > 2) {
-                for ($i = 1; $i < count($minRoute); $i++) {
-                    if (count($routes[$i]) == count($minRoute)) {
-                        $shortestRoutes[] = $routes[$i];
-                    }
-                }
-            }
-            if (count($shortestRoutes) == 1) {
-                foreach ($shortestRoutes[0] as $shortestRoute) {
-                    echo '->' . $shortestRoute;
-                }
-            } else {
-                foreach ($shortestRoutes as $shortestRoute) {
-                    foreach ($shortestRoute as $route) {
-                        echo '->' . $route;
-                    }
-                }
-            }
-        } else {
-            return "Route is not found.";
+        $minRoute = $this->minTimeRoute($routes);
+        foreach($routes as $route)
+        {
+            if($minRoute != $route)
+            {
+                $this->printRoute($route, $collectionOfBranches);
+            }   
         }
+
+        echo '<hr> Min Route:';
+
+        $this->printRoute($minRoute, $collectionOfBranches);
     }
 
-    private function newCalcucateRoutes($previousStationId, $currentStationId, $destinationStationId, $allStations, $collectionOfBranches, $collectionOfIntersections, &$visitedStations, &$routes, $minRoute)
+    private function calcucateRoutes($previousStationId, $currentStationId, $destinationStationId, $allStations, $collectionOfIntersections, &$visitedStations, &$routes)
     {
         $currentStation = $allStations->first(function ($station) use ($currentStationId) {
             return $station->id == $currentStationId;
@@ -91,7 +75,7 @@ class SearchShortPathController extends Controller
         });
 
         if ($currentStation->id == $destinationStation->id) {
-            $this->newPersistRoute($collectionOfBranches, $destinationStation, $visitedStations, $routes);
+            $this->persistRoute($destinationStation, $visitedStations, $routes);
         } else {
             $stations = [];
             if (isset($currentStation->next)) {
@@ -128,12 +112,12 @@ class SearchShortPathController extends Controller
                             continue;
                         }
                         if (count($routes) > 1) {
-                            $minRoute = min($routes);
-                            if (count($visitedStations) >= count($minRoute)) {
+                            $minRoute = $this->minTimeRoute($routes);
+                            if ($this->travelTime($visitedStations) >= $this->travelTime($minRoute)) {
                                 continue;
                             }
                         }
-                        $this->newCalcucateRoutes($currentStation->id, $nextStation->id, $destinationStationId, $allStations, $collectionOfBranches, $collectionOfIntersections, $visitedStations, $routes, $minRoute);
+                        $this->calcucateRoutes($currentStation->id, $nextStation->id, $destinationStationId, $allStations, $collectionOfIntersections, $visitedStations, $routes);
                     }
                     array_pop($visitedStations);
                 }
@@ -141,29 +125,63 @@ class SearchShortPathController extends Controller
         }
     }
 
-    private function newPersistRoute($branches, $destinationStationName, &$visitedStations, &$routes)
+    private function travelTime($route)
+    {
+        $travelTime = 0;
+        foreach($route as $route)
+        {
+            $travelTime += $route->travel_time;
+        }
+
+        return $travelTime;
+    }
+
+    private function minTimeRoute($routes)
+    {
+        $minTimeRoute = $routes[0];
+        $sizeRoutes = count($routes);
+
+        for($i = 0; $i < $sizeRoutes; $i++)
+        {
+            if($this->travelTime($routes[$i]) < $this->travelTime($minTimeRoute))
+            {
+                $minTimeRoute = $routes[$i];
+            }
+        }
+
+        return $minTimeRoute;
+    }
+
+    private function persistRoute($destinationStationName, &$visitedStations, &$routes)
     {
         if (!$visitedStations) {
             echo "No need to travel. You are already where you wanted to be :)";
         } else {
             $arrayOfStations = array();
             $size = count($visitedStations);
-            $station = '';
             for ($i = 0; $i < $size; $i++) {
-                $branch_id = $visitedStations[$i]->branch_id;
-                $branch = $branches->first(function ($branch) use ($branch_id) {
-                    return $branch['branch_id'] == $branch_id;
-                });
-                $station = "<span style='background: #{$branch['color']};'>{$visitedStations[$i]->name}</span>";
-                array_push($arrayOfStations, $station);
+                array_push($arrayOfStations, $visitedStations[$i]);
             }
-            $branch = $branches->first(function ($branch) use ($destinationStationName) {
-                return $branch['branch_id'] == $destinationStationName->branch_id;
-            });
-            $destinationStation = "<span style='background: #{$branch['color']};'>{$destinationStationName->name}</span>";
-            array_push($arrayOfStations, $destinationStation);
+            array_push($arrayOfStations, $destinationStationName);
             array_push($routes, $arrayOfStations);
         }
+    }
+
+    private function printRoute($route, $branches)
+    {
+        $travelTimeRoute = 0;
+        foreach($route as $route)
+        {
+            $travelTimeRoute += $route->travel_time;
+            $branch_id = $route->branch_id;
+            $branch = $branches->first(function ($branch) use ($branch_id) {
+                return $branch['branch_id'] == $branch_id;
+            });
+            $station = "<span style='background: #{$branch['color']};'>{$route->name}</span>";
+
+            echo $station . '-';
+        }
+        echo '<br>' . round($travelTimeRoute / 60, 2) . ' minutes' . '<br>';
     }
 
     private function randomColorPart()
@@ -174,62 +192,5 @@ class SearchShortPathController extends Controller
     private function randomColor()
     {
         return $this->randomColorPart() . $this->randomColorPart() . $this->randomColorPart();
-    }
-
-
-    private function calculateRoutes($previousStationId, $currentStationId, $destinationStationId, &$visitedStationsIds, &$routes)
-    {
-        $currentStation = Station::find($currentStationId);
-        $destinationStation = Station::find($destinationStationId);
-        if ($currentStation->id == $destinationStation->id) {
-            $this->persistRoute($destinationStation, $visitedStationsIds, $routes);
-        } else {
-            $stations = [];
-            if (isset($currentStation->next)) {
-                $stationNext = Station::find($currentStation->next);
-                array_push($stations, $stationNext);
-            }
-            $prevStations = Station::where('next', $currentStation->id)->get();
-            if ($prevStations->isNotEmpty()) {
-                array_push($stations, $prevStations->first());
-            }
-            if (isset($currentStation->intersections)) {
-                foreach ($currentStation->intersections as $intersection) {
-                    foreach ($intersection->stations as $intersectionStation) {
-                        if ($intersectionStation->id == $currentStation->id) {
-                            continue;
-                        }
-                        array_push($stations, $intersectionStation);
-                    }
-                }
-            }
-            if (!empty($stations)) {
-                if (!in_array($currentStation->id, $visitedStationsIds)) {
-                    array_push($visitedStationsIds, $currentStation->id);
-
-                    foreach ($stations as $nextStation) {
-                        if ($previousStationId != null && $previousStationId == $nextStation->id) {
-                            continue;
-                        }
-                        $this->calculateRoutes($currentStation->id, $nextStation->id, $destinationStationId, $visitedStationsIds, $routes);
-                    }
-                    array_pop($visitedStationsIds);
-                }
-            }
-        }
-    }
-
-    private function persistRoute($destinationStation, &$visitedStationIds, &$routes)
-    {
-        if (!$visitedStationIds) {
-            echo "No need to travel. You are already where you wanted to be :)";
-        } else {
-            $arrayOfStations = [];
-            for ($i = 0; $i <= count($visitedStationIds) - 1; $i++) {
-                array_push($arrayOfStations, Station::find($visitedStationIds[$i])->name);
-            }
-            array_push($arrayOfStations, $destinationStation->name);
-            array_push($routes, $arrayOfStations);
-        }
     }
 }
