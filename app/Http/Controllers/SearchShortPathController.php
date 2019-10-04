@@ -63,7 +63,7 @@ class SearchShortPathController extends Controller
 
         return response()->json([
             'msg' => 'Route is not found'
-        ]. 404);
+        ], 404);
     }
 
     private function calcucateRoutes($previousStationId, $currentStationId, $destinationStationId, $allStations, $collectionOfIntersections, &$visitedStations, &$routes)
