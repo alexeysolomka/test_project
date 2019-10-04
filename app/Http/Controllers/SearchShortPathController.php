@@ -13,7 +13,7 @@ class SearchShortPathController extends Controller
 {
     public function index()
     {
-        $stations = Station::all();
+        $stations = Station::select('id', 'name')->orderBy('id', 'ASC')->get();
 
         return view('underground.search_path', compact('stations'));
     }

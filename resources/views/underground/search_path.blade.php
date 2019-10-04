@@ -177,6 +177,10 @@ map.getCanvas().style.cursor = '';
                             to: to
                         },
                         success: function (data) {
+                            if(map.getSource('shortRoute')) {
+                                map.removeLayer('shortRoute');
+                                map.removeSource('shortRoute');
+                            }
                             var length = data['minRoute'].length;
                             var geometry = [];
                             var coordinates = [];
