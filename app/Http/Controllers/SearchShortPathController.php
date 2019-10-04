@@ -7,15 +7,34 @@ use App\Intersection;
 use App\Metro;
 use App\Station;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SearchShortPathController extends Controller
 {
     public function index()
     {
         // $metros = Metro::all();
-        $stations = Station::all();
+        $stations = Station::whereIn('branch_id', [1,2,3])->orderBy('id', 'ASC')->get();
 
         return view('underground.search_path', compact('stations'));
+    }
+
+    public function getStations()
+    {
+        // $branches = Branch::with(array('stations' => function ($query) {
+        //     $query->select('branch_id', DB::raw("ST_AsGeoJSON(point) as point"));
+        // }))
+        // ->whereIn('id', [1,2,3])->get();
+
+        $stations = DB::table('stations')
+        ->select('name', 'branch_id', DB::raw("ST_AsGeoJSON(point) as point"))
+        ->whereIn('branch_id', [1,2,3])
+        ->get();
+
+        return response()->json([
+            'stations' => $stations,
+            // 'branches' => $branches
+        ], 201);
     }
 
     public function searchStations(Request $request)
@@ -32,7 +51,7 @@ class SearchShortPathController extends Controller
         $from = $request->from;
         $to = $request->to;
 
-        $allStations = Station::with('intersections')->get();
+        $allStations = Station::with('intersections')->select('id', 'branch_id', 'name', 'next', 'travel_time', DB::raw("ST_AsGeoJSON(point) as point"))->get();
         $allIntersections = Intersection::with('stations')->get();
 
         $collectionOfStations = collect($allStations);
@@ -52,17 +71,21 @@ class SearchShortPathController extends Controller
         $this->calcucateRoutes(null, $from, $to, $collectionOfStations, $collectionOfIntersections, $visitedStations, $routes);
 
         $minRoute = $this->minTimeRoute($routes);
-        foreach($routes as $route)
-        {
-            if($minRoute != $route)
-            {
-                $this->printRoute($route, $collectionOfBranches);
-            }   
-        }
 
-        echo '<hr> Min Route:';
+        return response()->json([
+            'minRoute' => $minRoute
+        ], 201);
+        // foreach($routes as $route)
+        // {
+        //     if($minRoute != $route)
+        //     {
+        //         $this->printRoute($route, $collectionOfBranches);
+        //     }   
+        // }
 
-        $this->printRoute($minRoute, $collectionOfBranches);
+        // echo '<hr> Min Route:';
+
+        // $this->printRoute($minRoute, $collectionOfBranches);
     }
 
     private function calcucateRoutes($previousStationId, $currentStationId, $destinationStationId, $allStations, $collectionOfIntersections, &$visitedStations, &$routes)

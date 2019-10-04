@@ -8,6 +8,7 @@ use App\Intersection;
 use App\IntersectionToStation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
 
 class StationSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class StationSeeder extends Seeder
      */
     public function run()
     {
+        return true;
         IntersectionToStation::truncate();
         DB::table('types')
             ->insert([
@@ -94,55 +96,68 @@ class StationSeeder extends Seeder
                     ->insert([
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Kholodna Gora'
+                            'name' => 'Kholodna Gora',
+                            'point' => DB::raw("ST_MakePoint(49.98, 36.18)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Pivdenyi Vokzal'
+                            'name' => 'Pivdenyi Vokzal',
+                            'point' => DB::raw("ST_MakePoint(49.99, 36.20)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Central Rynok'
+                            'name' => 'Central Rynok',
+                            'point' => DB::raw("ST_MakePoint(49.99, 36.22)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Radyanska'
+                            'name' => 'Radyanska',
+                            'point' => DB::raw("ST_MakePoint(49.99, 36.23)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Pr. Gagarina'
+                            'name' => 'Pr. Gagarina',
+                            'point' => DB::raw("ST_MakePoint(49.98, 36.25)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Sportyvna'
+                            'name' => 'Sportyvna',
+                            'point' => DB::raw("ST_MakePoint(49.98, 36.26)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Zavod Malysheva'
+                            'name' => 'Zavod Malysheva',
+                            'point' => DB::raw("ST_MakePoint(49.98, 36.28)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Moscow Prospect'
+                            'name' => 'Moscow Prospect',
+                            'point' => DB::raw("ST_MakePoint(49.97, 36.31)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Marshala Jukova'
+                            'name' => 'Marshala Jukova',
+                            'point' => DB::raw("ST_MakePoint(49.97, 36.32)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Radyanskoy Armiy'
+                            'name' => 'Radyanskoy Armiy',
+                            'point' => DB::raw("ST_MakePoint(49.80, 36.35)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Maselskogo'
+                            'name' => 'Maselskogo',
+                            'point' => DB::raw("ST_MakePoint(49.96, 36.36)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Traktoriv'
+                            'name' => 'Traktoriv',
+                            'point' => DB::raw("ST_MakePoint(49.97, 36.38)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Prolet'
+                            'name' => 'Prolet',
+                            'point' => DB::raw("ST_MakePoint(49.95, 36.40)")
                         ],
                     ]);
             }
@@ -151,35 +166,43 @@ class StationSeeder extends Seeder
                     ->insert([
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Istorical Myzei'
+                            'name' => 'Istorical Myzei',
+                            'point' => DB::raw("ST_MakePoint(49.99, 36.23)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Universitet'
+                            'name' => 'Universitet',
+                            'point' => DB::raw("ST_MakePoint(50.00, 36.24)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Pushkinska'
+                            'name' => 'Pushkinska',
+                            'point' => DB::raw("ST_MakePoint(50.00, 36.25)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Kyivska'
+                            'name' => 'Kyivska',
+                            'point' => DB::raw("ST_MakePoint(50.00, 36.27)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Academic Barabashova'
+                            'name' => 'Academic Barabashova',
+                            'point' => DB::raw("ST_MakePoint(50.00, 36.30)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Academic Pavlova'
+                            'name' => 'Academic Pavlova',
+                            'point' => DB::raw("ST_MakePoint(50.01, 36.32)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Studentska'
+                            'name' => 'Studentska',
+                            'point' => DB::raw("ST_MakePoint(50.02, 36.33)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Heroes Pratsi'
+                            'name' => 'Heroes Pratsi',
+                            'point' => DB::raw("ST_MakePoint(50.02, 36.34)")
                         ],
                     ]);
             }
@@ -188,35 +211,43 @@ class StationSeeder extends Seeder
                     ->insert([
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Metrobydivnukiv'
+                            'name' => 'Metrobydivnukiv',
+                            'point' => DB::raw("ST_MakePoint(49.98, 36.2625)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Plosha Povstania'
+                            'name' => 'Plosha Povstania',
+                            'point' => DB::raw("ST_MakePoint(49.98861, 36.26472)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Architector Beketova'
+                            'name' => 'Architector Beketova',
+                            'point' => DB::raw("ST_MakePoint(49.99861, 36.24056)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Derzprom'
+                            'name' => 'Derzprom',
+                            'point' => DB::raw("ST_MakePoint(50.00583, 36.23111)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'naukova'
+                            'name' => 'naukova',
+                            'point' => DB::raw("ST_MakePoint(50.01278, 36.22667)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Botanical Sad'
+                            'name' => 'Botanical Sad',
+                            'point' => DB::raw("ST_MakePoint(50.02722, 36.22306)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => '23 August'
+                            'name' => '23 August',
+                            'point' => DB::raw("ST_MakePoint(50.03444, 36.22056)")
                         ],
                         [
                             'branch_id' => $branch->id,
-                            'name' => 'Oleksiivska'
+                            'name' => 'Oleksiivska',
+                            'point' => DB::raw("ST_MakePoint(50.05, 36.20667)")
                         ],
                     ]);
             }
@@ -697,5 +728,15 @@ class StationSeeder extends Seeder
                     ]);
             }
         }
+
+        // $faker = Faker::create();
+        // $allStations = Station::all();
+        // foreach($allStations as $station)
+        // {
+        //     $latitude = $faker->latitude();
+        //     $longitude = $faker->longitude();
+        //     $station->point = DB::raw("ST_MakePoint($latitude, $longitude)");
+        //     $station->save();
+        // }
     }
 }

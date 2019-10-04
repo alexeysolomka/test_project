@@ -194,25 +194,25 @@ class PermissionTableSeeder extends Seeder
         $roleUser = Role::where('name', 'user')->first();
 
         //admin permissions
-        foreach($permissions as $permission)
-        {
-            PermissionRole::create([
-                'permission_id' => $permission->id,
-                'role_id' => $roleAdmin->id
-            ]);    
+        foreach ($permissions as $permission) {
+            DB::table('permission_role')
+                ->insert([
+                    'permission_id' => $permission->id,
+                    'role_id' => $roleAdmin->id
+                ]);
         }
 
         //moderator permissions
         $permissions = Permission::where('controller', '!=', 'App\Http\Controllers\StationController')
-        ->where('controller', '!=', 'App\Http\Controllers\BranchController')
-        ->where('controller', '!=', 'App\Http\Controllers\IntersectionController')
-        ->get();
-        foreach($permissions as $permission)
-        {
-            PermissionRole::create([
-                'permission_id' => $permission->id,
-                'role_id' => $roleModerator->id
-            ]);
+            ->where('controller', '!=', 'App\Http\Controllers\BranchController')
+            ->where('controller', '!=', 'App\Http\Controllers\IntersectionController')
+            ->get();
+        foreach ($permissions as $permission) {
+            DB::table('permission_role')
+                ->insert([
+                    'permission_id' => $permission->id,
+                    'role_id' => $roleModerator->id
+                ]);
         }
         //User permissions
         $indexPagePermission = Permission::where('controller', 'App\Http\Controllers\HomeController')
@@ -231,34 +231,36 @@ class PermissionTableSeeder extends Seeder
         $apiUpdateProfilePermission = Permission::where('controller', 'App\Http\Controllers\Api\UserController')
             ->where('method', 'updateProfile')->first()->id;
 
-        PermissionRole::create([
-            'permission_id' => $indexPagePermission,
-            'role_id' => $roleUser->id
-        ]);
-        PermissionRole::create([
-            'permission_id' => $editProfilePermission,
-            'role_id' => $roleUser->id
-        ]);
-        PermissionRole::create([
-            'permission_id' => $updateProfilePermission,
-            'role_id' => $roleUser->id
-        ]);
-        PermissionRole::create([
-            'permission_id' => $removeAvatarPermission,
-            'role_id' => $roleUser->id
-        ]);
-        // API
-        PermissionRole::create([
-            'permission_id' => $apiIndexPagePermission,
-            'role_id' => $roleUser->id
-        ]);
-        PermissionRole::create([
-            'permission_id' => $apiEditProfilePermission,
-            'role_id' => $roleUser->id
-        ]);
-        PermissionRole::create([
-            'permission_id' => $apiUpdateProfilePermission,
-            'role_id' => $roleUser->id
-        ]);
+        DB::table('permission_role')
+            ->insert([
+                [
+                    'permission_id' => $indexPagePermission,
+                    'role_id' => $roleUser->id
+                ],
+                [
+                    'permission_id' => $editProfilePermission,
+                    'role_id' => $roleUser->id
+                ],
+                [
+                    'permission_id' => $updateProfilePermission,
+                    'role_id' => $roleUser->id
+                ],
+                [
+                    'permission_id' => $removeAvatarPermission,
+                    'role_id' => $roleUser->id
+                ],
+                [
+                    'permission_id' => $apiIndexPagePermission,
+                    'role_id' => $roleUser->id
+                ],
+                [
+                    'permission_id' => $apiEditProfilePermission,
+                    'role_id' => $roleUser->id
+                ],
+                [
+                    'permission_id' => $apiUpdateProfilePermission,
+                    'role_id' => $roleUser->id
+                ]
+            ]);
     }
 }

@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::get('/map', function () {
+    return view('underground.test_map');
+});
+
 Auth::routes();
 Route::match(['post', 'get'], 'register', function () {
     Auth::logout();
@@ -104,6 +109,7 @@ $searchPathConfig = [
 ];
 Route::group($searchPathConfig, function () {
     Route::get('/index', 'SearchShortPathController@index')->name('underground.searchIndex');
+    Route::get('/get-stations', 'SearchShortPathController@getStations')->name('underground.getStations');
     Route::post('/search-stations', 'SearchShortPathController@searchStations')->name('underground.searchStations');
     Route::post('/search', 'SearchShortPathController@search')->name('underground.search');
 });

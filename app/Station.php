@@ -14,7 +14,7 @@ class Station extends Model
         'branch_id' => 'required|exists:branches,id',
         'name' => 'required|max:30|unique:stations,name,'
     ];
-    protected $fillable = ['branch_id', 'name', 'next', 'travel_time'];
+    protected $fillable = ['branch_id', 'name', 'next', 'travel_time', 'point'];
 
     public function branch()
     {
