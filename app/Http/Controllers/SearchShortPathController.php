@@ -21,19 +21,18 @@ class SearchShortPathController extends Controller
 
     public function getStations()
     {
-        // $branches = Branch::with(array('stations' => function ($query) {
-        //     $query->select('branch_id', DB::raw("ST_AsGeoJSON(point) as point"));
-        // }))
-        // ->whereIn('id', [1,2,3])->get();
+        $branches = Branch::with(array('stations' => function ($query) {
+            $query->select('branch_id', DB::raw("ST_AsGeoJSON(point) as point"));
+        }))
+        ->get();
 
         $stations = DB::table('stations')
         ->select('name', 'branch_id', DB::raw("ST_AsGeoJSON(point) as point"))
-        ->whereIn('branch_id', [1,2,3])
         ->get();
 
         return response()->json([
             'stations' => $stations,
-            // 'branches' => $branches
+            'branches' => $branches
         ], 201);
     }
 
@@ -55,13 +54,6 @@ class SearchShortPathController extends Controller
         $allIntersections = Intersection::with('stations')->get();
 
         $collectionOfStations = collect($allStations);
-        $collectionOfBranches = collect();
-        foreach ($collectionOfStations->unique('branch_id') as $station) {
-            $collectionOfBranches->push([
-                'branch_id' => $station->branch_id,
-                'color' => $this->randomColor()
-            ]);
-        }
 
         $collectionOfIntersections = collect($allIntersections);
 
@@ -75,17 +67,6 @@ class SearchShortPathController extends Controller
         return response()->json([
             'minRoute' => $minRoute
         ], 201);
-        // foreach($routes as $route)
-        // {
-        //     if($minRoute != $route)
-        //     {
-        //         $this->printRoute($route, $collectionOfBranches);
-        //     }   
-        // }
-
-        // echo '<hr> Min Route:';
-
-        // $this->printRoute($minRoute, $collectionOfBranches);
     }
 
     private function calcucateRoutes($previousStationId, $currentStationId, $destinationStationId, $allStations, $collectionOfIntersections, &$visitedStations, &$routes)
@@ -188,32 +169,5 @@ class SearchShortPathController extends Controller
             array_push($arrayOfStations, $destinationStationName);
             array_push($routes, $arrayOfStations);
         }
-    }
-
-    private function printRoute($route, $branches)
-    {
-        $travelTimeRoute = 0;
-        foreach($route as $route)
-        {
-            $travelTimeRoute += $route->travel_time;
-            $branch_id = $route->branch_id;
-            $branch = $branches->first(function ($branch) use ($branch_id) {
-                return $branch['branch_id'] == $branch_id;
-            });
-            $station = "<span style='background: #{$branch['color']};'>{$route->name}</span>";
-
-            echo $station . '-';
-        }
-        echo '<br>' . round($travelTimeRoute / 60, 2) . ' minutes' . '<br>';
-    }
-
-    private function randomColorPart()
-    {
-        return str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
-    }
-
-    private function randomColor()
-    {
-        return $this->randomColorPart() . $this->randomColorPart() . $this->randomColorPart();
     }
 }

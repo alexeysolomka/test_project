@@ -1,42 +1,3 @@
-<html>
-
-<head>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.2/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.2/mapbox-gl.css' rel='stylesheet' />
-
-</head>
-
-<body>
-    <div>
-        <form method="post" action="{{ route('underground.search') }}">
-            @csrf
-            <div>
-                <label for="from">From</label>
-                <select id="from" name="from" required>
-                    @foreach($stations as $station)
-                    <option value="{{ $station->id }}">{{ $station->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div>
-                <label for="to">To</label>
-                <select id="to" name="to">
-                    @foreach($stations as $station)
-                    <option value="{{ $station->id }}">{{ $station->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div>
-                <button type="reset" id="search">Search</button>
-            </div>
-        </form>
-    </div>
-    <h1 id="nameRoute"></h1>
-    <div id='map' style='width: 1000; height: 500px;'></div>
-    <script>
 $(document).ready(function () {
     function getRandomColor() {
         var letters = '0123456789ABCDEF';
@@ -48,7 +9,8 @@ $(document).ready(function () {
     }
     $.ajax({
         type: 'get',
-        url: '{{ route('underground.getStations') }}',
+        url: '{{ route('
+        underground.getStations ') }}',
         success: function (data) {
             //init map
             mapboxgl.accessToken = 'pk.eyJ1IjoiZGFuaWxvMTMiLCJhIjoiY2sxYnN3dG9tMXBkazNsbXJ5aG5kejd0ciJ9.LqhgeQZAQpdBKd8cj9dICw';
@@ -144,7 +106,8 @@ $(document).ready(function () {
                     var to = $('#to').val();
                     $.ajax({
                         type: 'post',
-                        url: '{{ route('underground.search') }}',
+                        url: '{{ route('
+                        underground.search ') }}',
                         data: {
                             _token: CSRF_TOKEN,
                             message: $(".getinfo").val(),
@@ -198,8 +161,3 @@ $(document).ready(function () {
         }
     });
 });
-
-    </script>
-</body>
-
-</html>

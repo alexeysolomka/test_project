@@ -105,7 +105,7 @@ class KharkivMetroSeeder extends Seeder
                         [
                             'branch_id' => $branch->id,
                             'name' => 'Radyanskoy Armiy',
-                            'point' => DB::raw("ST_MakePoint(49.80, 36.35)")
+                            'point' => DB::raw("ST_MakePoint(49.96, 36.34)")
                         ],
                         [
                             'branch_id' => $branch->id,
