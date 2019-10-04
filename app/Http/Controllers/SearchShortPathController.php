@@ -22,7 +22,7 @@ class SearchShortPathController extends Controller
     {
         $branches = Branch::with(array('stations' => function ($query) {
             //select points stations of each branch
-            $query->select('branch_id', DB::raw("ST_AsGeoJSON(point) as point"));
+            $query->select('id', 'name', 'branch_id', DB::raw("ST_AsGeoJSON(point) as point"))->orderBy('id', 'ASC');
         }))
         ->get();
 
