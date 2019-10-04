@@ -62,6 +62,9 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     *  This helper which compare user role
+     */
     public function checkRole($roleName)
     {
         $role = Role::where('name', $roleName)->first();

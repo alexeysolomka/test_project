@@ -8,23 +8,17 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    private $userRepository;
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * @var UserRepository $userRepository
      */
+    private $userRepository;
+
     public function __construct()
     {
         $this->middleware('auth');
         $this->userRepository = app(UserRepository::class);
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
         $users = $this->userRepository->getAll();

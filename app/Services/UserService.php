@@ -62,6 +62,7 @@ class UserService
             mkdir($path, 0700, true);
         }
 
+        // Path for storing image
         $newFilePath = '/images/resized_' . $name . time() . '.' . $image->getClientOriginalExtension();
 
         switch ($image->getClientOriginalExtension())

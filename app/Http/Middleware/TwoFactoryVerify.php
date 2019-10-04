@@ -25,11 +25,10 @@ class TwoFactoryVerify
             return $next($request);
         }
 
-        $twilio = new TwilioService();
-
         $user->token_2fa = mt_rand(10000, 99999);
         $user->save();
 
+        $twilio = new TwilioService();
         $twilio->createMessage($user->phone_number, $user->token_2fa);
 
         return redirect('/2fa');

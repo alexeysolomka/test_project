@@ -112,7 +112,6 @@ $(document).ready(function () {
                         geometry = JSON.parse(data['branches'][i].stations[j].point);
                         coordinates.push(geometry.coordinates.reverse());
                     }
-                    console.log(coordinates);
                     map.addLayer({
                         "id": "route" + i,
                         "type": "line",

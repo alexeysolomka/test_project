@@ -13,7 +13,6 @@ class SearchShortPathController extends Controller
 {
     public function index()
     {
-        // $metros = Metro::all();
         $stations = Station::whereIn('branch_id', [1,2,3])->orderBy('id', 'ASC')->get();
 
         return view('underground.search_path', compact('stations'));
@@ -22,6 +21,7 @@ class SearchShortPathController extends Controller
     public function getStations()
     {
         $branches = Branch::with(array('stations' => function ($query) {
+            //select points stations of each branch
             $query->select('branch_id', DB::raw("ST_AsGeoJSON(point) as point"));
         }))
         ->get();
@@ -36,15 +36,6 @@ class SearchShortPathController extends Controller
         ], 201);
     }
 
-    public function searchStations(Request $request)
-    {
-        $location = $request->get('location');
-        $branches_ids = Branch::where('metro_id', $location)->pluck('id');
-        $stations = Station::whereIn('branch_id', $branches_ids)->get();
-
-        return view('underground.search_path', compact('stations'));
-    }
-
     public function search(Request $request)
     {
         $from = $request->from;
@@ -54,19 +45,25 @@ class SearchShortPathController extends Controller
         $allIntersections = Intersection::with('stations')->get();
 
         $collectionOfStations = collect($allStations);
-
         $collectionOfIntersections = collect($allIntersections);
 
         $routes = [];
         $visitedStations = [];
 
         $this->calcucateRoutes(null, $from, $to, $collectionOfStations, $collectionOfIntersections, $visitedStations, $routes);
+        
+        if(count($routes) > 1)
+        {
+            $minRoute = $this->minTimeRoute($routes);
 
-        $minRoute = $this->minTimeRoute($routes);
+            return response()->json([
+                'minRoute' => $minRoute
+            ], 201);
+        }
 
         return response()->json([
-            'minRoute' => $minRoute
-        ], 201);
+            'msg' => 'Route is not found'
+        ]. 404);
     }
 
     private function calcucateRoutes($previousStationId, $currentStationId, $destinationStationId, $allStations, $collectionOfIntersections, &$visitedStations, &$routes)
@@ -115,6 +112,7 @@ class SearchShortPathController extends Controller
                         if ($previousStationId != null && $previousStationId == $nextStation->id) {
                             continue;
                         }
+                        //this check is necessary in order not to go on routes that are greater than the minimum
                         if (count($routes) > 1) {
                             $minRoute = $this->minTimeRoute($routes);
                             if ($this->travelTime($visitedStations) >= $this->travelTime($minRoute)) {
@@ -129,6 +127,9 @@ class SearchShortPathController extends Controller
         }
     }
 
+    /**
+     * Found travel time for route
+     */
     private function travelTime($route)
     {
         $travelTime = 0;
@@ -140,6 +141,9 @@ class SearchShortPathController extends Controller
         return $travelTime;
     }
 
+    /**
+     * Search min route by travel time
+     */
     private function minTimeRoute($routes)
     {
         $minTimeRoute = $routes[0];
@@ -156,6 +160,9 @@ class SearchShortPathController extends Controller
         return $minTimeRoute;
     }
 
+    /**
+     * Store founded routes
+     */
     private function persistRoute($destinationStationName, &$visitedStations, &$routes)
     {
         if (!$visitedStations) {

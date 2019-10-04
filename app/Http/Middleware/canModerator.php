@@ -18,6 +18,7 @@ class canModerator
     {
         $user = User::find($request->userId);
         
+        // if founded user is admin and current user not admin then forbidden
         if($user->role->name == 'admin' && !auth()->user()->checkRole('admin'))
         {
             return response()->json('Forbidden', 403);

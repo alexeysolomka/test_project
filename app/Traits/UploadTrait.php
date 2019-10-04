@@ -7,6 +7,10 @@ use Illuminate\Http\UploadedFile;
 
 trait UploadTrait
 {
+    /**
+     * Store original file
+     *  @return file
+     */
     public function uploadOne(UploadedFile $uploadedFile, $folder = null, $disk = 'public', $filename = null)
     {
         $name = !is_null($filename) ? $filename : str_random(25);

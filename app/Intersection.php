@@ -26,6 +26,9 @@ class Intersection extends Model
             );
     }
 
+    /**
+     *  Get all stations wich doesn't exist in this intersections
+     */
     public function availableStations()
     {
         $ids = DB::table('intersection_to_stations')->where('intersection_id', $this->id)->pluck('station_id');

@@ -27,12 +27,6 @@ class UserController extends Controller
         return view('users.create', compact('roles'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return route
-     */
     public function store(CreateUserRequest $request)
     {
         $data = $request->all();
@@ -51,12 +45,6 @@ class UserController extends Controller
             ->withInput();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return view
-     */
     public function edit($id)
     {
         $response = $this->userService->getUserForEdit($id);
@@ -77,13 +65,6 @@ class UserController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return route
-     */
     public function update(UpdateUserRequest $request, $id)
     {
         $data = $request->all();
@@ -107,12 +88,6 @@ class UserController extends Controller
         return back()->with('error', 'Error to delete avatar.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return route
-     */
     public function destroy($id)
     {
         $user = User::find($id);
