@@ -13,7 +13,7 @@ class SearchShortPathController extends Controller
 {
     public function index()
     {
-        $stations = Station::whereIn('branch_id', [1,2,3])->orderBy('id', 'ASC')->get();
+        $stations = Station::all();
 
         return view('underground.search_path', compact('stations'));
     }
