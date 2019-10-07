@@ -35,8 +35,8 @@ $(document).ready(function () {
                         "coordinates": geometry.coordinates
                     },
                     "properties": {
-                        "title": data['stations'][i].name,
-                        "icon": "monument"
+                        "description": '<strong>' + data['stations'][i].name + '</strong>',
+                        "icon": "rail-metro"
                     }
                 }, );
             }
@@ -52,12 +52,38 @@ $(document).ready(function () {
                         }
                     },
                     "layout": {
-                        "icon-image": "{icon}-15",
+                        "icon-image": "{icon}",
                         "text-field": "{title}",
                         "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
                         "text-offset": [0, 0.6],
                         "text-anchor": "top"
                     }
+                });
+                map.on('click', 'points', function (e) {
+                    var coordinates = e.features[0].geometry.coordinates.slice();
+                    var description = e.features[0].properties.description;
+
+                    // Ensure that if the map is zoomed out such that multiple
+                    // copies of the feature are visible, the popup appears
+                    // over the copy being pointed to.
+                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                    }
+
+                    new mapboxgl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(description)
+                        .addTo(map);
+                });
+
+                // Change the cursor to a pointer when the mouse is over the places layer.
+                map.on('mouseenter', 'places', function () {
+                    map.getCanvas().style.cursor = 'pointer';
+                });
+
+                // Change it back to a pointer when it leaves.
+                map.on('mouseleave', 'places', function () {
+                    map.getCanvas().style.cursor = '';
                 });
 
                 //make lines of branches
@@ -70,11 +96,9 @@ $(document).ready(function () {
                     coordinates = [];
                     var stationsLength = data['branches'][i].stations.length;
                     for (var j = 0; j < stationsLength; j++) {
-                        console.log(data['branches'][i].stations[j]);
                         geometry = JSON.parse(data['branches'][i].stations[j].point);
                         coordinates.push(geometry.coordinates.reverse());
                     }
-                    console.log(coordinates);
                     map.addLayer({
                         "id": "route" + i,
                         "type": "line",
@@ -90,8 +114,8 @@ $(document).ready(function () {
                             }
                         },
                         "layout": {
-                            "line-join": "round",
-                            "line-cap": "round"
+                            "line-join": "bevel",
+                            "line-cap": "butt"
                         },
                         "paint": {
                             "line-color": colors[i],
@@ -115,6 +139,10 @@ $(document).ready(function () {
                             to: to
                         },
                         success: function (data) {
+                            if (map.getSource('shortRoute')) {
+                                map.removeLayer('shortRoute');
+                                map.removeSource('shortRoute');
+                            }
                             var length = data['minRoute'].length;
                             var geometry = [];
                             var coordinates = [];

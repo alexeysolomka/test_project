@@ -37,7 +37,7 @@
     <h1 id="nameRoute"></h1>
     <div id='map' style='width: 1000; height: 500px;'></div>
     <script>
-$(document).ready(function () {
+        $(document).ready(function () {
     function getRandomColor() {
         var letters = '0123456789ABCDEF';
         var color = '#';
@@ -98,31 +98,31 @@ $(document).ready(function () {
                     }
                 });
                 map.on('click', 'points', function (e) {
-var coordinates = e.features[0].geometry.coordinates.slice();
-var description = e.features[0].properties.description;
- 
-// Ensure that if the map is zoomed out such that multiple
-// copies of the feature are visible, the popup appears
-// over the copy being pointed to.
-while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-}
- 
-new mapboxgl.Popup()
-.setLngLat(coordinates)
-.setHTML(description)
-.addTo(map);
-});
- 
-// Change the cursor to a pointer when the mouse is over the places layer.
-map.on('mouseenter', 'places', function () {
-map.getCanvas().style.cursor = 'pointer';
-});
- 
-// Change it back to a pointer when it leaves.
-map.on('mouseleave', 'places', function () {
-map.getCanvas().style.cursor = '';
-});
+                    var coordinates = e.features[0].geometry.coordinates.slice();
+                    var description = e.features[0].properties.description;
+
+                    // Ensure that if the map is zoomed out such that multiple
+                    // copies of the feature are visible, the popup appears
+                    // over the copy being pointed to.
+                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                    }
+
+                    new mapboxgl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(description)
+                        .addTo(map);
+                });
+
+                // Change the cursor to a pointer when the mouse is over the places layer.
+                map.on('mouseenter', 'places', function () {
+                    map.getCanvas().style.cursor = 'pointer';
+                });
+
+                // Change it back to a pointer when it leaves.
+                map.on('mouseleave', 'places', function () {
+                    map.getCanvas().style.cursor = '';
+                });
 
                 //make lines of branches
                 var branchesLength = data['branches'].length;
@@ -137,7 +137,7 @@ map.getCanvas().style.cursor = '';
                         geometry = JSON.parse(data['branches'][i].stations[j].point);
                         coordinates.push(geometry.coordinates.reverse());
                     }
-                       map.addLayer({
+                    map.addLayer({
                         "id": "route" + i,
                         "type": "line",
                         "source": {
@@ -176,7 +176,7 @@ map.getCanvas().style.cursor = '';
                             to: to
                         },
                         success: function (data) {
-                            if(map.getSource('shortRoute')) {
+                            if (map.getSource('shortRoute')) {
                                 map.removeLayer('shortRoute');
                                 map.removeSource('shortRoute');
                             }
@@ -226,7 +226,6 @@ map.getCanvas().style.cursor = '';
         }
     });
 });
-
     </script>
 </body>
 
