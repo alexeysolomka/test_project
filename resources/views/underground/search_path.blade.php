@@ -134,7 +134,6 @@ map.getCanvas().style.cursor = '';
                     coordinates = [];
                     var stationsLength = data['branches'][i].stations.length;
                     for (var j = 0; j < stationsLength; j++) {
-                        console.log(data['branches'][i].stations[j].name);
                         geometry = JSON.parse(data['branches'][i].stations[j].point);
                         coordinates.push(geometry.coordinates.reverse());
                     }

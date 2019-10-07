@@ -52,7 +52,7 @@ class SearchShortPathController extends Controller
 
         $this->calcucateRoutes(null, $from, $to, $collectionOfStations, $collectionOfIntersections, $visitedStations, $routes);
         
-        if(count($routes) > 1)
+        if(count($routes) >= 1)
         {
             $minRoute = $this->minTimeRoute($routes);
 
