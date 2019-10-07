@@ -42,6 +42,14 @@ class SearchShortPathController extends Controller
         $from = $request->get('from', null);
         $to = $request->get('to', null);
 
+        if(is_null($from) || is_null($to))
+        {
+            return response()
+            ->json([
+                'msg' => 'Route cannot be found.'
+            ], 400);
+        }
+
         $allStations = Station::with('intersections')->select('id', 'branch_id', 'name', 'next', 'travel_time', DB::raw("ST_AsGeoJSON(point) as point"))->get();
         $allIntersections = Intersection::with('stations')->get();
 
