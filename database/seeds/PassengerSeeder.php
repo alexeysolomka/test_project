@@ -47,8 +47,8 @@ class PassengerSeeder extends Seeder
         $date = $dateNow->addDay(rand(1, 6));
         $date = date_parse_from_format('Y-m-d h:i:s', $date);
 
-        $start = 5.5 * 60 * 60;
-        $end = 24 * 60 * 60;
+        $start = 7.5 * 60 * 60;
+        $end = 8 * 60 * 60;
         $sigma = 900;
 
         $normal = 8 * 60 * 60;
@@ -58,7 +58,22 @@ class PassengerSeeder extends Seeder
             $denumerator = 2 * pow($sigma, 2);
             $result = (1 / $sigma * sqrt(2 * M_PI)) * exp(-($numerator / $denumerator));
             $start += 600;
-            dump($result);
+            dump($result  * 60 * 60);
+        }
+        dump('rr');
+
+        $start = 15.5 * 60 * 60;
+        $end = 16 * 60 * 60;
+        $sigma = 900;
+
+        $normal = 16 * 60 * 60;
+        while($end > $start)
+        {
+            $numerator = pow($start - $normal, 2);
+            $denumerator = 2 * pow($sigma, 2);
+            $result = (1 / $sigma * sqrt(2 * M_PI)) * exp(-($numerator / $denumerator));
+            $start += 600;
+            dump($result * 60 * 60);
         }
         dd('rr');
     }

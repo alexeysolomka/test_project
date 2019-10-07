@@ -20,35 +20,28 @@
 
 <body>
     <div class="container">
-            <div class="col-sx-1 mt-3" align="center">
-                    <h3>Search short path from station to station:</h3>
-                    <div class="col-md-6">
-                        <form method="post" action="{{ route('underground.search') }}">
-                            @csrf
-                            <div class="form-group">
-                                <label for="from">From</label>
-                                <select id="from" name="from" class="form-control" required>
-                                    @foreach($stations as $station)
-                                    <option value="{{ $station->id }}">{{ $station->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="to">To</label>
-                                <select id="to" name="to" class="form-control">
-                                    @foreach($stations as $station)
-                                    <option value="{{ $station->id }}">{{ $station->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div>
-                                <button type="reset" class="btn btn-outline-success" id="search">Search</button>
-                            </div>
-                        </form>
-                    </div>
+        <div class="col-sx-1 mt-3" align="center">
+            <h3>Search short path from station to station:</h3>
+            <div class="col-md-6">
+                {{ Form::model($station, ['action' => 'SearchShortPathController@search']) }}
+                <div class="form-group">
+                    {{ Form::label('from', 'From') }}
+                    {{ Form::select('from', $stations->pluck('name', 'id'), '',
+                                     ['class' => 'form-control', 'id' => 'from'])}}
                 </div>
-                <h1 id="nameRoute"></h1>
-                <div id='map' style='width: 1000; height: 500px;'></div>
+                <div class="form-group">
+                    {{ Form::label('to', 'To') }}
+                    {{ Form::select('to', $stations->pluck('name', 'id'), '',
+                                         ['class' => 'form-control', 'id' => 'to'])}}
+                </div>
+                <div class="form-group">
+                    {{ Form::button('Search Path', ['type' => 'submit', 'class' => 'btn btn-success', 'id' => 'search'] )  }}
+                </div>
+                {{ Form::close() }}
+            </div>
+        </div>
+        <h1 id="nameRoute"></h1>
+        <div id='map' style='width: 1000; height: 500px;'></div>
     </div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
@@ -179,7 +172,8 @@
                         });
                     }
                     //search and pring short route
-                    $('#search').on('click', function () {
+                    $('#search').on('click', function (e) {
+                        e.preventDefault();
                         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                         var from = $('#from').val();
                         var to = $('#to').val();

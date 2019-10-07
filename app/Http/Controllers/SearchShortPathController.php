@@ -13,9 +13,10 @@ class SearchShortPathController extends Controller
 {
     public function index()
     {
+        $station = new Station;
         $stations = Station::select('id', 'name')->orderBy('id', 'ASC')->get();
 
-        return view('underground.search_path', compact('stations'));
+        return view('underground.search_path', compact('stations', 'station'));
     }
 
     public function getStations()
@@ -38,8 +39,8 @@ class SearchShortPathController extends Controller
 
     public function search(Request $request)
     {
-        $from = $request->from;
-        $to = $request->to;
+        $from = $request->get('from', null);
+        $to = $request->get('to', null);
 
         $allStations = Station::with('intersections')->select('id', 'branch_id', 'name', 'next', 'travel_time', DB::raw("ST_AsGeoJSON(point) as point"))->get();
         $allIntersections = Intersection::with('stations')->get();
