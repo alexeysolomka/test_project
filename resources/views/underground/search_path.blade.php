@@ -74,7 +74,7 @@ $(document).ready(function () {
                     },
                     "properties": {
                         "description": '<strong>' + data['stations'][i].name + '</strong>',
-                        "icon": "monument"
+                        "icon": "rail-metro"
                     }
                 }, );
             }
@@ -90,7 +90,7 @@ $(document).ready(function () {
                         }
                     },
                     "layout": {
-                        "icon-image": "{icon}-15",
+                        "icon-image": "{icon}",
                         "text-field": "{title}",
                         "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
                         "text-offset": [0, 0.6],
