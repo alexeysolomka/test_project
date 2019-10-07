@@ -19,7 +19,13 @@ class KharkivMetroSeeder extends Seeder
      */
     public function run()
     {
-        IntersectionToStation::truncate();
+        DB::table('types')->delete();
+        DB::table('metros')->delete();
+        DB::table('branches')->delete();
+        DB::table('stations')->delete();
+        DB::table('intersections')->delete();
+        DB::table('intersection_to_stations')->delete();
+
         DB::table('types')
             ->insert([
                 ['name' => 'Metro']
