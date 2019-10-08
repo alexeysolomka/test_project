@@ -65,8 +65,8 @@
                 var map = new mapboxgl.Map({
                     container: 'map',
                     style: 'mapbox://styles/mapbox/streets-v11',
-                    center: [0, 0],
-                    zoom: 2
+                    center: [36.232845, 49.988358],
+                    zoom: 10
                 });
                 var length = data['stations'].length;
                 var features = [];
