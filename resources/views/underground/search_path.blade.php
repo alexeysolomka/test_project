@@ -21,7 +21,7 @@
 <body>
     <div class="container">
         <div class="col-sx-1 mt-3" align="center">
-            <h3>Search short path from station to station:</h3>
+            <h4>Search short path from station to station:</h4>
             <div class="col-md-6">
                 {{ Form::model($station, ['action' => 'SearchShortPathController@search']) }}
                 <div class="form-group">
@@ -40,7 +40,7 @@
                 {{ Form::close() }}
             </div>
         </div>
-        <h1 id="nameRoute"></h1>
+        <h4 id="spentTime"></h4>
         <div id='map' style='width: 1000; height: 500px;'></div>
     </div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
@@ -194,13 +194,14 @@
                                 var length = data['minRoute'].length;
                                 var geometry = [];
                                 var coordinates = [];
-                                var from = data['minRoute'][0].name;
-                                var to = data['minRoute'][length - 1].name;
-                                $('#nameRoute').text(from + ' - ' + to);
+                                var timeSpent = 0;
                                 for (var i = 0; i < length; i++) {
+                                    console.log(data['minRoute'][i]);
                                     geometry = JSON.parse(data['minRoute'][i].point);
                                     coordinates.push(geometry.coordinates.reverse());
+                                    timeSpent += data['minRoute'][i].travel_time;
                                 }
+                                $('#spentTime').text('Spent time:~'+ Math.ceil(timeSpent / 60) + ' minutes');
                                 map.addLayer({
                                     "id": "shortRoute",
                                     "type": "line",
