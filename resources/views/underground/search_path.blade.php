@@ -60,7 +60,7 @@
             type: 'get',
             url: '{{ route('underground.getStations') }}',
             success: function (data) {
-                //init map
+                //init map 
                 mapboxgl.accessToken = 'pk.eyJ1IjoiZGFuaWxvMTMiLCJhIjoiY2sxYnN3dG9tMXBkazNsbXJ5aG5kejd0ciJ9.LqhgeQZAQpdBKd8cj9dICw';
                 var map = new mapboxgl.Map({
                     container: 'map',
