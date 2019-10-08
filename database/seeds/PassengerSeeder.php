@@ -4,6 +4,7 @@ use App\Station;
 use App\Intersection;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PassengerSeeder extends Seeder
 {
@@ -47,35 +48,57 @@ class PassengerSeeder extends Seeder
         $date = $dateNow->addDay(rand(1, 6));
         $date = date_parse_from_format('Y-m-d h:i:s', $date);
 
-        $start = 7.5 * 60 * 60;
-        $end = 8 * 60 * 60;
-        $sigma = 900;
-
+        $sigma = 7.5 * 60 * 60;
         $normal = 8 * 60 * 60;
-        while($end > $start)
+        $start = 7.5 * 60 * 60;
+        $end = 9 * 60 * 60;
+        
+        while($start < $end)
         {
             $numerator = pow($start - $normal, 2);
             $denumerator = 2 * pow($sigma, 2);
             $result = (1 / $sigma * sqrt(2 * M_PI)) * exp(-($numerator / $denumerator));
             $start += 600;
-            dump($result  * 60 * 60);
+            $time = ($start / 60 / 60) + ($result * 60 * 60);
+            $time = sprintf('%02d:%02d', (int) $time, fmod($time, 1) * 60);
+            $time = explode(':', $time);
+            $dateTime = Carbon::create($date['year'], $date['month'], $date['day'], $time[0], $time[1]);
+            DB::table('passengers')
+            ->insert([
+                [
+                    'from_id' => $from,
+                    'to_id' => $to,
+                    'route' => $route,
+                    'date' => $dateTime
+                ]
+            ]);
         }
-        dump('rr');
 
-        $start = 15.5 * 60 * 60;
-        $end = 16 * 60 * 60;
-        $sigma = 900;
-
+        $sigma = 15.5 * 60 * 60;
         $normal = 16 * 60 * 60;
-        while($end > $start)
+        $start = 15.5 * 60 * 60;
+        $end = 17 * 60 * 60;
+        
+        while($start < $end)
         {
             $numerator = pow($start - $normal, 2);
             $denumerator = 2 * pow($sigma, 2);
             $result = (1 / $sigma * sqrt(2 * M_PI)) * exp(-($numerator / $denumerator));
             $start += 600;
-            dump($result * 60 * 60);
+            $time = ($start / 60 / 60) + ($result * 60 * 60);
+            $time = sprintf('%02d:%02d', (int) $time, fmod($time, 1) * 60);
+            $time = explode(':', $time);
+            $dateTime = Carbon::create($date['year'], $date['month'], $date['day'], $time[0], $time[1]);
+            DB::table('passengers')
+            ->insert([
+                [
+                    'from_id' => $from,
+                    'to_id' => $to,
+                    'route' => $route,
+                    'date' => $dateTime
+                ]
+            ]);
         }
-        dd('rr');
     }
 
     private function calcucateRoutes($previousStationId, $currentStationId, $destinationStationId, $allStations, $collectionOfIntersections, &$visitedStations, &$routes)

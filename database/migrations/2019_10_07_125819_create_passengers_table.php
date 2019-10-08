@@ -18,6 +18,7 @@ class CreatePassengersTable extends Migration
             $table->unsignedInteger('from_id');
             $table->unsignedInteger('to_id');
             $table->text('route');
+            $table->dateTime('date');
             $table->foreign('from_id')
                 ->references('id')
                 ->on('stations')
